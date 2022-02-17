@@ -1,0 +1,127 @@
+#post-viewer{
+	position: absolute;
+    display: none;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 35px auto;
+	width: 1000px;
+    height: 750px;
+	border: solid 2px;
+    border-radius: 15px;
+    background-color: white;	
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+    justify-content: center; /*가로축 정렬*/
+    align-items: center; /*세로축 정렬*/
+}
+
+#upper-bar{
+	background-color: lightgray;
+    grid-column: 1 / span 2;
+    margin-top: 1px;
+	border-radius: 15px 15px 0px 0px;    
+    border-bottom: solid 2px;
+	/* border-top: solid 2px; */
+    height: 100%;
+}
+
+#post-viewer-close-btn{
+    position: absolute;
+    /* background-color: white; */
+    top: 4px;
+    right: 7px;
+    /* border: solid 1px;
+    border-radius: 12px; */
+    width: 27px;
+    height: 27px;
+    text-align: center;
+    user-select: none;
+}
+
+#post-viewer-close-btn-img{
+    position: absolute;
+    width: 100%;
+    transform: translateX(-50%);
+}
+
+
+/*------ hierarchy-viewer ------*/
+#hierarchy-viewer{
+    border-right: solid 2px;
+    height: 100%;
+}
+
+#post-title{
+    text-align: center;
+    user-select: none;
+}
+
+#hierarchy-viewer input[type="checkbox"]{
+    display: none;
+	/* checked: "checked"; */
+}
+
+/*닫힌 폴더의 아이콘*/
+#hierarchy-viewer input[type="checkbox"]:checked+.label-folder:before{
+    content: '\e801';
+    font-family: fontello;
+}
+
+#hierarchy-viewer .selected{
+    background-color: #ddd;
+}
+
+#hierarchy-viewer ul{
+	list-style: none;
+    padding-left: 30px;
+}
+
+.label-file:before{
+    content: '\e800';
+    font-family: fontello;
+}
+
+.label-folder:before{
+    content: '\e802';
+    font-family: fontello;
+}
+
+/*글자 선택 안 되게(파랑 안 뜨게)*/
+#hierarchy-viewer label {
+    user-select: none;
+}
+
+#hierarchy-viewer label:before{
+	display: inline-block;
+    width: 25px;
+}
+
+/*------ right-viewer ------*/
+/* iframe에서 화면 크기 right viewer에 맞추는 법
+
+iframe에 들어가는 html의 요소 중 화면 크기에 비례하는 것과 절대적인 것(픽셀)이 같이 있어서
+단순히 document-viewer의 width와 height를 고치면(100% OR 750px) 픽셀로 설정한 요소의 크기가 변하지 않음
+
+그래서 iframe을 scale해야 함
+
+-실패 원인 (3시간)
+right-viewer의 width와 height를 100%(부모에 맞게)로 지정한 뒤 scale함
+-> 비율로 크기를 지정한 요소의 크기가 맞지 않음
+
+-성공 요인
+right-viewer의 width와 height를 100vw, 100vh로 지정하여 화면의 크기에 맞게 함
+-> 비율로 크기를 지정한 요소와 픽셀로 크기를 지정한 요소가 같은 사이즈를 갖게 됨
+-> 이후 부모의 크기에 맞게 scale하여 해결
+*/
+
+#right-viewer{
+    height: 100%;
+    border-radius: 0px 20px 20px 0px;
+}
+
+#document-viewer{
+    position: absolute;
+	border-radius: 0px 20px 20px 0px;
+	width: 1600px;
+	height: 900px;
+}

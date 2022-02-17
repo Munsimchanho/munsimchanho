@@ -1,0 +1,38 @@
+#palette_bar{
+    position: absolute;
+    background-color: #6782c2;
+    border-radius: 1em;	
+    left: 50%;
+    top: 90%;
+    width: 30vw;    
+    height: calc(0.16 * 30vw);
+    transform: translate(-50%, -50%);
+}
+
+#edit_button{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	width: 4.2vw;
+	height: 4.2vw;	
+}
+
+#save_edit_button{
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 4.2vw;
+	height: 4.2vw;
+}
+
+#sticker_edit_button{
+    position: absolute;
+    left: 60%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 4.2vw;
+	height: 4.2vw;
+    opacity: 50%;
+}

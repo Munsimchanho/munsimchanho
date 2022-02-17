@@ -1,0 +1,21 @@
+#palette_edit{
+    position: absolute;
+    background-color: white;
+    border: solid 2px;
+    border-radius: 20px;
+    display: none;
+    left: 50%;
+    top: 50%;
+    width: 30vw;
+    height: calc(0.6 * 30vw);
+    transform: translate(-50%, -50%);
+    justify-content: center; /*가로축 정렬*/
+    align-items: center; /*세로축 정렬*/
+}
+
+#submit{
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%, -50%); /*옆으로 반 옮겨줌*/
+}

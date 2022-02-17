@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> 포터블 </title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="stylesheet" href="/src/font/css/fontello.css">
+        <link rel="stylesheet" href="/src/css/palette.css">        
+        <script
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+          crossorigin="anonymous"></script>
+        <script src="/src/js/DrawSticker.js" defer></script>
+        <script src="/src/js/StickerMove.js" defer></script>
+        <script src="/src/js/StickerInfoEdit.js" defer></script>
+        <script src="/src/js/PaletteEditManager.js" defer></script>
+        <script src="/src/js/DirectoryManager.js" defer></script>
+        <script src="/src/js/PostViewerManager.js" defer></script>
+	</head>
+	<body>
+        <div id="palette" class="palette">
+            
+        </div>
+        
+        <div id="palette_bar">
+            <div id="edit_button" onclick="Edit()">
+                <img src="/Img/pencil.png">
+            </div>
+            <div id="save_edit_button" onclick="SaveEdit()">
+                <img src="/Img/checked.png">
+            </div>
+            <div id="sticker_edit_button" onclick="StickerEdit()">
+                <img src="/Img/pencil.png">
+            </div>
+        </div>
+        
+        <div id="palette_edit" draggable="false">
+            <form>
+				<input type="file"   name="paletteImg" id="stickerImgInput" accept="image/*"/>
+                <input type="text"   value="내용을 입력하세요" name="paletteText"/>       
+                <input type="button" onclick="StickerSaveEdit()" value="제출" id="submit"/>
+            </form>
+        </div>
+        
+		<div id="post-viewer" draggable="false">
+            <div id="upper-bar" draggable="false">
+                <div id="post-viewer-close-btn" onclick="ClosePostViewer()" draggable="false">
+                    <img id="post-viewer-close-btn-img" src="/Img/cross.png" draggable="false">
+                </div>
+            </div>
+            
+            <div id="hierarchy-viewer" draggable="false">     
+				<h1 id="post-title" draggable="false"></h1> 
+                <hr>
+            </div>
+            
+            <div id="right-viewer" draggable="false">
+				<iframe id="document-viewer" src="/src/html/index.html" frameborder='0' draggable="false">
+				</iframe>
+            </div>
+		</div>
+	</body>
+</html>
+
+
+

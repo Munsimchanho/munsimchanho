@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'profolio';
+    src: url('/src/css/BASKVILL.ttf') format('truetype');
+}
+
+h1{
+    font-size: 60px;
+	font-family: 'profolio';
+}
+ 
+body{
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+}
+
+table{
+    margin: 0px;
+}

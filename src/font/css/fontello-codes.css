@@ -1,0 +1,7 @@
+
+.icon-doc:before { content: '\e800'; } /* '' */
+.icon-folder:before { content: '\e801'; } /* '' */
+.icon-folder-open:before { content: '\e802'; } /* '' */
+.icon-folder-empty:before { content: '\f114'; } /* '' */
+.icon-folder-open-empty:before { content: '\f115'; } /* '' */
+.icon-doc-inv:before { content: '\f15b'; } /* '' */
