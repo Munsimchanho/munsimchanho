@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> 포터블 </title>
+		<title> ProFolio </title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <link rel="stylesheet" href="/src/font/css/fontello.css">
-        <link rel="stylesheet" href="/src/css/palette.css">        
+        <link rel="stylesheet" href="/src/css/palette.css">
+        <link rel="stylesheet" href="/src/css/palette_bar.css">
+        <link rel="stylesheet" href="/src/css/palette_edit.css">
+        <link rel="stylesheet" href="/src/css/post_viewer.css">
         <script
           src="https://code.jquery.com/jquery-3.6.0.min.js"
           integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -35,11 +38,15 @@
         </div>
         
         <div id="palette_edit" draggable="false">
-            <form>
+            <form onkeydown="return event.key != 'Enter';">
 				<input type="file"   name="paletteImg" id="stickerImgInput" accept="image/*"/>
-                <input type="text"   value="내용을 입력하세요" name="paletteText"/>       
+                <input type="text"   placeholder="내용을 입력하세요" name="paletteText"/>       
                 <input type="button" onclick="StickerSaveEdit()" value="제출" id="submit"/>
             </form>
+        </div>
+        
+        <div id="veiling-div" draggable="false">
+            
         </div>
         
 		<div id="post-viewer" draggable="false">

@@ -31,7 +31,7 @@ $.ajax({
     for (let i = 0; i < json.length; i++){
         palette.appendChild(drawSticker(i, json[i]));
     }
-})
+});
 
 function drawSticker(index, data){
     let sticker = document.createElement("div");
@@ -42,6 +42,28 @@ function drawSticker(index, data){
     let image = document.createElement("img");
     image.src = data['imgDir'];
     image.draggable = false;
+    
+    let stickerText = document.createElement("h1");
+    stickerText.innerHTML = data['text'];
+    stickerText.style.position = "absolute";
+    // stickerText.style.left = "50%";
+    stickerText.style.top  = "50%";
+    stickerText.style.transform = "translateY(-50%)";
+    stickerText.style.margin = "0px";
+    stickerText.style.fontSize = "4em";
+    stickerText.style.userSelect = "none";
+    stickerText.style.width = data['size'][0] + "px";
+    stickerText.style.textAlign = "center";
+    stickerText.draggable = false;
+    
+    
+    
+    stickerText.addEventListener("mousedown", () => {
+        showPostViewer(sticker, index)
+    });
+    
+    
+    
     
     sticker.style.width = data['size'][0] + "px";
     sticker.style.height = data['size'][1] + "px";
@@ -73,40 +95,13 @@ function drawSticker(index, data){
     sticker.appendChild(edgeDivBL);
     sticker.appendChild(edgeDivBR);
     sticker.appendChild(rotater);
+    sticker.appendChild(stickerText);
     
     displayEdges(sticker, false);
     
     stickers.push(sticker);
     image.addEventListener("mousedown", () => {
-        editingDiv = sticker;
-        if (Editing){
-            stickerEditButton.style.opacity = 1;
-            displayEdges_only(sticker, true);
-        }
-        else{                        
-            // 변수에 현재 열고 있는 폴더 id를 저장
-            selectedDir = json[index]['dir'];
-            
-            // ul 태그를 지운 후 새로 그림
-            document.querySelector("#hierarchy-viewer ul").remove();
-            drawUlWithId(selectedDir);
-            
-            // selectedDir을 id로 하는 노드
-            let selectedNode;
-            for (let i = 0; i < directoryJson.length; i++){
-                if (directoryJson[i]['id'] == selectedDir){
-                    selectedNode = directoryJson[i];
-                }
-            }
-            
-            document.getElementById("post-title").innerHTML = selectedNode['name'];
-            
-            post_viewer.style.display = "grid";
-            
-            // document-viewer의 크기를 다시 지정
-            resizeDocViewer();
-        }
-        body.addEventListener("mousemove", moveDiv);
+        showPostViewer(sticker, index);
     });
     
     edgeDivTL.addEventListener("mousedown", () => {
@@ -131,6 +126,39 @@ function drawSticker(index, data){
     });
 
     return sticker;
+}
+
+function showPostViewer(sticker, index){
+    editingDiv = sticker;
+    if (Editing){
+        stickerEditButton.style.opacity = 1;
+        displayEdges_only(sticker, true);
+    }
+    else{                        
+        // 변수에 현재 열고 있는 폴더 id를 저장
+        selectedDir = json[index]['dir'];
+
+        // ul 태그를 지운 후 새로 그림
+        document.querySelector("#hierarchy-viewer ul").remove();
+        drawUlWithId(selectedDir);
+
+        // selectedDir을 id로 하는 노드
+        let selectedNode;
+        for (let i = 0; i < directoryJson.length; i++){
+            if (directoryJson[i]['id'] == selectedDir){
+                selectedNode = directoryJson[i];
+            }
+        }
+
+        document.getElementById("post-title").innerHTML = selectedNode['name'];
+
+        document.querySelector("#veiling-div").style.display = "block";
+        post_viewer.style.display = "grid";
+
+        // document-viewer의 크기를 다시 지정
+        resizeDocViewer();
+    }
+    body.addEventListener("mousemove", moveDiv);
 }
 
 function displayEdges(element, on){
@@ -161,4 +189,6 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", resizeDivBR);
     body.removeEventListener("mousemove", rotateDiv);
     body.removeEventListener("mousemove", moveDiv);
+    document.querySelector("html").removeEventListener("mousemove", movePostViewer);
+    doc_viewer.style.zIndex = "0";
 });

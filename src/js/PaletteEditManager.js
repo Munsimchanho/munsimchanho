@@ -9,19 +9,28 @@ let editingDiv;
 
 // 연필(수정) 버튼 클릭 시
 function Edit(){
-    // prompt: alert랑 비슷한데 inputfield가 있고, 그 안의 값을 반환
-    let pw = prompt("비밀번호를 입력하세요.");
+    let formData = new FormData();
+    formData.append("code", "check");
     
-    // 추후 비밀번호를 불러와 확인하는 코드로 수정 (아마 mysql을 쓸 듯..?)
-    if (pw == "1234"){
-        Editing = true;
-        editButton.style.display = "none";
-        saveButton.style.display = "block";
-        stickerEditButton.style.display = "block";
-    }
-    else{
-        alert("비밀번호가 일치하지 않습니다.");
-    }
+    $.ajax({
+        url         : "/src/php/Login.php",
+        type        : "POST",
+        dataType    : 'html',
+        enctype     : "multipart/form-data",
+        processData : false,
+        contentType : false,
+        data        : formData,
+        async       : false,
+        success     : function(res){
+            console.log(res);
+            if (res == userName){
+                Editing = true;
+                editButton.style.display = "none";
+                saveButton.style.display = "block";
+                stickerEditButton.style.display = "block";
+            }
+        }
+    });
 }
 
 // 변경 사항 저장 버튼 클릭 시
@@ -37,6 +46,14 @@ function SaveEdit(){
         json[i]['pos'] = [parseFloat(stickers[i].style.left), parseFloat(stickers[i].style.top)];
         json[i]['rot'] = parseFloat(stickers[i].style.transform.split('(')[1].replace('deg)', ''));
         json[i]['size'] = [parseFloat(stickers[i].style.width), parseFloat(stickers[i].style.height)];
+        if (TempStickerText[i] != null) {
+            json[i]['text'] = TempStickerText[i];
+            for (let j = 0; j < directoryJson.length; j++){
+                if (directoryJson[j]['id'] == json[i]['dir']){
+                    directoryJson[j]['name'] = json[i]['text'];
+                }
+            }
+        }
     }
     
     // resize, rotate용 ui 끄기
@@ -85,6 +102,25 @@ function SaveEdit(){
     formData.append("code", "UpdateJson");
     formData.append("user", userName);
     formData.append("json", JSON.stringify(json));
+
+    $.ajax({
+        url         : "/src/php/Server.php",
+        type        : "POST",
+        dataType    : 'html',
+        enctype     : "multipart/form-data",
+        processData : false,
+        contentType : false,
+        data        : formData,
+        async       : false,
+        success     : function(res){ }
+    });
+    
+    console.log(directoryJson);
+    // DirectoryInfo.json을 서버에 올림
+    formData = new FormData();
+    formData.append("code", "UpdateDirectoryInfo");
+    formData.append("user", userName);
+    formData.append("json", JSON.stringify(directoryJson));
 
     $.ajax({
         url         : "/src/php/Server.php",

@@ -6,6 +6,7 @@ let selectedDir;
 function ClosePostViewer(){
     console.log("a");
     document.querySelector("#post-viewer").style.display = "none";
+    document.querySelector("#veiling-div").style.display = "none";
 }
 
 // checkbox 값 변경 시 폴더 여닫는 기능
@@ -79,7 +80,7 @@ function drawUl(node){
             checkbox.setAttribute("onchange", "selectLi(this)");
 
             // isFolderClosed의 값을 받아와 checkbox.checked에 적용함
-            checkbox.checked = isFolderClosed[childrenNode[i]['id']];                
+            checkbox.checked = isFolderClosed[childrenNode[i]['id']];
 
             // 폴더의 아이콘을 표시할 label
             let iconLabel = document.createElement("label");
@@ -156,30 +157,38 @@ function drawUl(node){
     return ul;
 }
 
+
 let directoryJson;
 let hierarchy_viewer = document.getElementById("hierarchy-viewer");
-let isFolderClosed = {};
+let isFolderClosed = {}; // dictionary/ "id": true/false
 
 // 서버에서 DirectoryInfo.json파일을 받아옴, ul 객체를 그림
 $.ajax({ 
+    // 캐시 사용을 피하기 위해 주소를 매번 다르게 지정
     url: `/User/${ userName }/DirectoryInfo.json?a=${ Math.random() }`,
     method: "GET", 
     dataType: "json" 
 })
 .done(function(data) {
+	//DirectoryInfo.json의 정보가 이제 directoryJson 이라는 변수에 저장됨
     directoryJson = data;
     //console.log("a")
     console.log(directoryJson);
     
-    // isFolderOpened에 directoryJson의 id값과 opened값을 부여함
-    //! 파일의 생성, 삭제 시 isFolderOpened도 수정해야 함
+    // isFolderClosed에 directoryJson의 id값과 opened값을 부여함
+    //! 파일의 생성, 삭제 시 isFolderClosed도 수정해야 함
     for (let i = 0; i < directoryJson.length; i++){
         if (directoryJson[i]['type'] != "folder") continue;
         //console.log(directoryJson[i]['id'])
+        
+        // isFolderClosed: dictionary
+        // 키 값이 directoryJson[i]['id']인 것의 값을 true로 설정
         isFolderClosed[directoryJson[i]['id']] = true;
     }        
     
-    // ul 객체를 그림
+    // ul 객체를 그림 
+	// ul이 존재하지 않을 경우 초기화에 에러가 발생할 수 있음 
+	// 초기화 할 ul이 언제나 존재하도록 임시 ul을 넣어줌
     let tempUl = document.createElement("ul");
     tempUl.id = "tempUl";
     hierarchy_viewer.appendChild(tempUl);
@@ -192,6 +201,8 @@ $.ajax({
 
 // directoryJson 변수를 이용해 ul 객체를 그림
 function drawUlWithId(folderId){
+    console.log(isFolderClosed);
+    
     // #hierarchy_viewer의 자식에 트리구조 생성
     for (let i = 0; i < directoryJson.length; i++){
         if (directoryJson[i]['id'] != folderId) continue; // 원하는 노드에 대해서만 실행함
@@ -268,7 +279,7 @@ function drawUlWithId(folderId){
             
             let folderDropContainer = document.querySelector(".dropContainer");
             
-            if (folderDropContainer != null){
+            if (folderDropContainer != null){                
                 // drag 한 객체의 id(childId)와 drop 한 객체의 id(parentId)를 받음
                 let childId = draggable.id;
                 let parentId = folderDropContainer.id;
@@ -333,6 +344,108 @@ function drawUlWithId(folderId){
         // dragleave 되면 dropContainer 라는 className 삭제
         container.addEventListener("dragleave", e => {
             container.classList.remove("dropContainer");
+        });
+        
+        container.addEventListener("drop", ev => {
+            ev.preventDefault();
+            
+            // 파일 받아옴 //👍😊
+            // 파일 서버 올림, dir 설정 //👍
+            // directoryJson(var) 수정 //👍
+            // directoryInfo.json 올리기 //👍
+            // ul 다시 그리기 //👍
+                                    
+            let file;
+            
+            if (ev.dataTransfer.items) {
+                if (ev.dataTransfer.items.length == 1){
+                    if (ev.dataTransfer.items[0].kind === 'file') {
+                        file = ev.dataTransfer.items[0].getAsFile();
+                    }
+                }
+            }
+            else {
+                if (ev.dataTransfer.files.length == 1){
+                    file = ev.dataTransfer.files[0];
+                }                
+            }
+                        
+            if (file != null){
+                let fileAlreadyExists = false;
+                for (let i = 0; i < directoryJson.length; i++){
+                    if (directoryJson[i]['name'] == file['name']){
+                        fileAlreadyExists = true;
+                        break;
+                    }
+                }
+                                
+                if (!fileAlreadyExists){
+                    console.log("a");
+                    
+                    let curTime = Date.now();
+                    // 파일의 확장자만 따옴
+                    let ext = file.type.split("/")[1];
+
+                    // 파일의 이름을 img0.284134985.png와 같이 랜덤하게 지정함
+                    let fname = `${ curTime }.${ ext }`;
+                    // directoryJson 수정
+                    directoryJson.push({"type": "file", "name": file['name'], "id": curTime, "parent": container.id, "dir": `../../User/${ userName }/Files/${ fname }`});
+                    
+                    
+                    // 파일 업로드
+                    let formData = new FormData();
+                    formData.append("code", "UploadFile");
+                    formData.append("user", userName);
+                    formData.append("name", fname);
+                    formData.append("file", file);
+
+                    $.ajax({
+                        url         : "/src/php/Server.php",
+                        type        : "POST",
+                        dataType    : 'html',
+                        enctype     : "multipart/form-data",
+                        processData : false,
+                        contentType : false,
+                        data        : formData,
+                        async       : false,
+                        success     : function(res){ }
+                    });
+                    
+                    
+                    
+                    // 수정한 directoryJson을 서버에 올림
+                    formData = new FormData();
+                    formData.append("code", "UpdateDirectoryInfo");
+                    formData.append("user", userName);
+                    formData.append("json", JSON.stringify(directoryJson));
+
+                    $.ajax({
+                        url         : "/src/php/Server.php",
+                        type        : "POST",
+                        dataType    : 'html',
+                        enctype     : "multipart/form-data",
+                        processData : false,
+                        contentType : false,
+                        data        : formData,
+                        async       : false,
+                        success     : function(res){ }
+                    });
+                    
+                    // isFolderOpened를 수정함
+                    for (let i = 0; i < directoryJson.length; i++){
+                        if (directoryJson[i]['type'] != "folder") continue;
+                        let cb = document.getElementById(`${ directoryJson[i]['id'] }-checkbox`);
+                        if (cb == null) continue;
+                        isFolderClosed[directoryJson[i]['id']] = cb.checked;
+                    }
+                    
+                    // ul 태그를 삭제함
+                    document.querySelector("#hierarchy-viewer ul").remove();
+                    
+                    // ul 다시 그리기
+                    drawUlWithId(selectedDir);
+                }
+            }
         });
     });
 }

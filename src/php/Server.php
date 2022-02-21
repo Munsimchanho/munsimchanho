@@ -16,6 +16,8 @@
     }
     else if ($_POST['code'] == "UpdateDirectoryInfo"){
         file_put_contents("../../User/" . $_POST['user'] . "/DirectoryInfo.json", $_POST['json']);
-        print_r($_POST['json']);
+    }
+    else if ($_POST['code'] == "UploadFile"){
+        move_uploaded_file($_FILES['file']['tmp_name'], "../../User/" . $_POST['user'] . "/Files/" . $_POST['name']);
     }
 ?>

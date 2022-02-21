@@ -1,5 +1,5 @@
 #palette_bar{
-    position: absolute;
+    position: fixed;
     background-color: #6782c2;
     border-radius: 1em;	
     left: 50%;

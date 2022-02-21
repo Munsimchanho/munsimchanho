@@ -5,22 +5,249 @@
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <link rel="stylesheet" href="/src/css/index.css">
+        <script
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+          crossorigin="anonymous"></script>
+        <script src="/src/js/index.js" defer></script>
 	</head>
 	<body>
-		<center> <h1>
-            P&nbsp;R&nbsp;O&nbsp;F&nbsp;O&nbsp;L&nbsp;I&nbsp;O
-            </h1> </center>
+        <div id="show-user-grid-btn" >            
+            <img src="/Img/test/btn_arrow_right.svg" onclick="movePage()"/>
+        </div>
         
-        <table border="1" width="100%">
-            <tr> 
-                <td> <center> <a href="/src/html/palette.html?user=Seongchan"> <img src="/Img/m2.png" alt="1" width= "46%" height= "30%"> </a> </center> </td> 
-                <td> <center> <a href="/src/html/palette.html?user=Chaerin"> <img src="/Img/s2.jpg" alt="1" width= "46%" height= "30%"> </a> </center> </td> 
-            </tr>
+        <div id="start-page">
+            <div id="index-title">
+                <h1>
+                    <div class="title-p">P</div>
+                    <div class="title-r">R</div>
+                    <div class="title-o">O</div>
+                    <div class="title-f">F</div>
+                    <div class="title-o">O</div>
+                    <div class="title-l">L</div>
+                    <div class="title-i">I</div>
+                    <div class="title-o">O</div>
+                </h1>
+            </div>
             
-            <tr>
-                <td> <center> <a href="/src/html/palette.html?user=Chanho"> <img src="/Img/c2.jpg" alt="1" width= "46%" height= "30%"> </a> </center> </td>
-                <td> <center> <a href="/src/html/palette.html?user=Junho"> <img src="/Img/j2.jpg" alt="1" width= "46%" height= "30%"> </a> </center> </td>
-            </tr>
-        </table>
-	</body>
+            <div id="login-btn" onclick='document.querySelector("#login-window").style.display = "block";'>
+                <p>
+                     시작하기
+                </p>
+            </div>
+            
+            <div id="login-window">
+                <div id="login-close-btn" onclick='document.querySelector("#login-window").style.display = "none";' draggable="false">
+                    <img id="login-close-btn-img" src="/Img/test/btn_cross.svg" draggable="false">
+                </div>
+                
+                <p>
+                    로그인
+                </p>
+
+                <div>
+                    <div class="login-user-div" draggable="false">
+                        <div class="login-user-info">
+                            <img src="/Img/m2.png" alt="" draggable="false">
+                            <p> 문성찬 </p>
+                        </div>
+                        <div class="login-password-submit">
+                            <input class="login-password" type="password" placeholder="비밀번호">
+                            <div class="login-submit" onclick="login('Seongchan', this)">
+                                로그인
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-user-div" draggable="false">
+                        <div class="login-user-info">
+                            <img src="/Img/s2.jpg" alt="" draggable="false">
+                            <p> 심채린 </p>
+                        </div>
+                        <div class="login-password-submit">
+                            <input class="login-password" type="password" placeholder="비밀번호">
+                            <div class="login-submit" onclick="login('Chaerin', this)">
+                                로그인
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-user-div" draggable="false">
+                        <div class="login-user-info">
+                            <img src="/Img/c2.jpg" alt="" draggable="false">
+                            <p> 이찬호 </p>
+                        </div>
+                        <div class="login-password-submit">
+                            <input class="login-password" type="password" placeholder="비밀번호">
+                            <div class="login-submit" onclick="login('Chanho', this)">
+                                로그인
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-user-div" draggable="false">
+                        <div class="login-user-info">
+                            <img src="/Img/j2.jpg" alt="" draggable="false">
+                            <p> 조준호 </p>
+                        </div>
+                        <div class="login-password-submit">
+                            <input class="login-password" type="password" placeholder="비밀번호">
+                            <div class="login-submit" onclick="login('Junho', this)">
+                                로그인
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+            
+            <div id="start-page-footer">
+                <p>
+                    2022.01.14 ~ 2022.00.00 PROJECT PROFOLIO
+                </p>
+            </div>
+            
+            
+            <div id="start-page-bg">
+                <div id="start-page-bg-keyboard">
+                    <div class="keyboard-line">
+                        <div id="backtick-key" class="keyboard-key"></div>
+                        <div id="1-key" class="keyboard-key"></div>
+                        <div id="2-key" class="keyboard-key"></div>
+                        <div id="3-key" class="keyboard-key"></div>
+                        <div id="4-key" class="keyboard-key"></div>
+                        <div id="5-key" class="keyboard-key"></div>
+                        <div id="6-key" class="keyboard-key"></div>
+                        <div id="7-key" class="keyboard-key"></div>
+                        <div id="8-key" class="keyboard-key"></div>
+                        <div id="9-key" class="keyboard-key"></div>
+                        <div id="0-key" class="keyboard-key"></div>
+                        <div id="hyphen-key" class="keyboard-key"></div>
+                        <div id="equal-key" class="keyboard-key"></div>
+                        <div id="backspace-key" class="keyboard-key2"></div>
+                    </div>
+
+                    <div class="keyboard-line">
+                        <div id="tab-key" class="keyboard-key1-3"></div>
+                        <div id="q-key" class="keyboard-key"></div>
+                        <div id="w-key" class="keyboard-key"></div>
+                        <div id="e-key" class="keyboard-key"></div>
+                        <div id="r-key" class="keyboard-key"></div>
+                        <div id="t-key" class="keyboard-key"></div>
+                        <div id="y-key" class="keyboard-key"></div>
+                        <div id="u-key" class="keyboard-key"></div>
+                        <div id="i-key" class="keyboard-key"></div>
+                        <div id="o-key" class="keyboard-key"></div>
+                        <div id="p-key" class="keyboard-key"></div>
+                        <div id="lsqrbr-key" class="keyboard-key"></div>
+                        <div id="rsqrbr-key" class="keyboard-key"></div>
+                        <div id="\-key" class="keyboard-key1-7"></div>
+                    </div>
+
+                    <div class="keyboard-line">
+                        <div id="cabs-key" class="keyboard-key1-6"></div>
+                        <div id="a-key" class="keyboard-key"></div>
+                        <div id="s-key" class="keyboard-key"></div>
+                        <div id="d-key" class="keyboard-key"></div>
+                        <div id="f-key" class="keyboard-key"></div>
+                        <div id="g-key" class="keyboard-key"></div>
+                        <div id="h-key" class="keyboard-key"></div>
+                        <div id="j-key" class="keyboard-key"></div>
+                        <div id="k-key" class="keyboard-key"></div>
+                        <div id="l-key" class="keyboard-key"></div>
+                        <div id="semicolon-key" class="keyboard-key"></div>
+                        <div id="apostrophe-key" class="keyboard-key"></div>
+                        <div id="enter-key" class="keyboard-key2-4"></div>
+                    </div>
+
+                    <div class="keyboard-line">
+                        <div id="shift-key" class="keyboard-key2"></div>
+                        <div id="z-key" class="keyboard-key"></div>
+                        <div id="x-key" class="keyboard-key"></div>
+                        <div id="c-key" class="keyboard-key"></div>
+                        <div id="v-key" class="keyboard-key"></div>
+                        <div id="b-key" class="keyboard-key"></div>
+                        <div id="n-key" class="keyboard-key"></div>
+                        <div id="m-key" class="keyboard-key"></div>
+                        <div id="comma-key" class="keyboard-key"></div>
+                        <div id="period-key" class="keyboard-key"></div>
+                        <div id="slash-key" class="keyboard-key"></div>
+                        <div id="bigshift-key" class="keyboard-key3"></div>
+                    </div>
+                    
+                    <div class="keyboard-line">
+                        <div id="lctrl-key" class="keyboard-key1-2"></div>
+                        <div id="windows-key" class="keyboard-key1-2"></div>
+                        <div id="lalt-key" class="keyboard-key1-2"></div>
+                        <div id="space-key" class="keyboard-key6-5"></div>
+                        <div id="ralt-key" class="keyboard-key1-2"></div>
+                        <div id="fn-key" class="keyboard-key1-2"></div>
+                        <div id="mode-key" class="keyboard-key1-2"></div>
+                        <div id="rctrl-key" class="keyboard-key1-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div id="user-grid">
+            <div class= "HoverDiv">               
+                <img class="beforeHover" id="Seongchan" src="/Img/m2.png" alt="" draggable="false">
+                <div class="user-hover">
+                    <a href="/src/html/palette.html?user=Seongchan" draggable="false"> <img class="afterHover" id="Seongchan" src="/Img/m1.jpg" alt="" draggable="false"> </a>
+                    <div class="user-profile">
+                        <h1>SeongChan</h1>
+                        <ul>
+                            <li><strong> Sub-Developer </strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="HoverDiv">  
+                <img class="beforeHover" id="Chaerin" src="/Img/s2.jpg" alt="" draggable="false">
+                <div class="user-hover">
+                    <a href="/src/html/palette.html?user=Chaerin" draggable="false"> <img class="afterHover" id="Chaerin" src="/Img/s1.jpg" alt="" draggable="false"> </a>
+                     <div class="user-profile">
+                        <h1>Chaerin</h1>
+                        <ul>
+                            <li><strong> Main-Developer </strong></li>
+                            <li class="user-contact"> <a href="https://www.instagram.com/cherishiim/?hl=ko"> <img src="/Img/instagram_logo_white.png" alt="인스타그램 로고"></a>&nbsp;cherishiim</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="HoverDiv">
+                <img class="beforeHover" id="Chanho" src="/Img/c2.jpg" alt="" draggable="false">
+                <div class="user-hover">
+                    <a href="/src/html/palette.html?user=Chanho" draggable="false">  <img class="afterHover" id="Chanho" src="/Img/c1.jpg" alt="" draggable="false"> </a>
+                     <div class="user-profile">
+                        <h1>Chanho</h1>
+                        <ul>
+                            <li><strong> Sub-Developer </strong></li>
+                            <li class="user-contact"> <a href="https://www.instagram.com/chanho_04/?hl=ko"> <img src="/Img/instagram_logo_white.png" alt="인스타그램 로고"></a>&nbsp;chanho_04</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="HoverDiv">
+                <img class="beforeHover" id="Junho" src="/Img/j2.jpg" alt="" draggable="false">
+                <div class="user-hover">
+                    <a href="/src/html/palette.html?user=Junho" draggable="false"> <img class="afterHover" id="Junho" src="/Img/j1.png" alt="" draggable="false"> </a>
+                     <div class="user-profile">
+                        <h1>Junho</h1>
+                        <ul>
+                            <li><strong> Main-Developer </strong></li>
+                            <li class="user-contact"> <a href="https://www.instagram.com/whwnsgh_0812/?hl=ko"> <img src="/Img/instagram_logo_white.png" alt="인스타그램 로고"></a>&nbsp;whwnsgh_0812</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+		
+		
+		
+		<div id="ending"><br/>2022.01.14 ~ 2022.00.00 <br/> PROJECT PROFOLIO  </div>
+	</body> 
 </html>
