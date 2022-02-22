@@ -38,7 +38,7 @@ function movePage(){
 }
 
 let allowedKey = {'1': '1-key', '2': '2-key', '3': '3-key', '4': '4-key', '5': '5-key', '6': '6-key', '7': '7-key', '8': '8-key', '9': '9-key', '0': '0-key', '-': 'hyphen-key', '=': 'equal-key', 
-                 'q': 'q-key', 'w': 'w-key', 'e': 'e-key', 'r': 'r-key', 't': 't-key', 'y': 'y-key', 'y': 'y-key', 'u': 'u-key', 'i': 'i-key', 'o': 'o-key', 'p': 'p-key', '[': 'lsqrbr-key', ']': 'rsqrbr-key',
+                 'q': 'q-key', 'w': 'w-key', 'e': 'e-key', 'r': 'r-key', 't': 't-key', 'y': 'y-key', 'y': 'y-key', 'u': 'u-key', 'i': 'i-key', 'o': 'o-key', 'p': 'p-key', '[': 'lsqrbr-key', ']': 'rsqrbr-key', '\\': 'backslash-key',
                  'a': 'a-key', 's': 's-key', 'd': 'd-key', 'f': 'f-key', 'g': 'g-key', 'h': 'h-key', 'j': 'j-key', 'k': 'k-key', 'l': 'l-key', ';': 'semicolon-key', "'": 'apostrophe-key',
                 'z': 'z-key', 'x': 'x-key', 'c': 'c-key', 'v': 'v-key', 'b': 'b-key', 'n': 'n-key', 'm': 'm-key', ',': 'comma-key', '.': 'period-key', '/': 'slash-key', ' ': 'space-key', '`': 'backtick-key'};
 
