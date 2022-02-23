@@ -124,6 +124,8 @@ function drawUlWithId(folderId){
         let parentUl = document.createElement("ul");
         parentUl.appendChild(drawFolderLi(directoryJson[i]));
         hierarchy_viewer.appendChild(parentUl);
+        document.getElementById(folderId).draggable = false;
+        document.getElementById(folderId).classList.remove("draggable");
         break;
     }
     
@@ -153,6 +155,8 @@ function drawUlWithId(folderId){
                 // drag 한 객체의 id(childId)와 drop 한 객체의 id(parentId)를 받음
                 let childId = draggable.id;
                 let parentId = folderDropContainer.id;
+                
+                if (childId == parentId) return;
 
                 //console.log(childId + ", " + parentId);
 
