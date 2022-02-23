@@ -80,40 +80,18 @@ function SaveEdit(){
         formData.append("delete", json[i]['imgDir']);
         formData.append("name", fname);
         formData.append("file", TempImageFile[i]);
-        
-        $.ajax({
-            url         : "/src/php/Server.php",
-            type        : "POST",
-            dataType    : 'html',
-            enctype     : "multipart/form-data",
-            processData : false,
-            contentType : false,
-            data        : formData,
-            async       : false,
-            success     : function(res){ }
-        });
+        ajaxPost(formData, "/src/php/Server.php");
         
         // json 변수의 imgDir을 변경
         json[i]['imgDir'] = `../../User/${ userName }/${ fname }`;
     }
     
     // StickerInfo.json을 서버에 올림
-    formData = new FormData();
+    let formData = new FormData();
     formData.append("code", "UpdateJson");
     formData.append("user", userName);
     formData.append("json", JSON.stringify(json));
-
-    $.ajax({
-        url         : "/src/php/Server.php",
-        type        : "POST",
-        dataType    : 'html',
-        enctype     : "multipart/form-data",
-        processData : false,
-        contentType : false,
-        data        : formData,
-        async       : false,
-        success     : function(res){ }
-    });
+    ajaxPost(formData, "/src/php/Server.php");
     
     console.log(directoryJson);
     // DirectoryInfo.json을 서버에 올림
@@ -121,33 +99,7 @@ function SaveEdit(){
     formData.append("code", "UpdateDirectoryInfo");
     formData.append("user", userName);
     formData.append("json", JSON.stringify(directoryJson));
-
-    $.ajax({
-        url         : "/src/php/Server.php",
-        type        : "POST",
-        dataType    : 'html',
-        enctype     : "multipart/form-data",
-        processData : false,
-        contentType : false,
-        data        : formData,
-        async       : false,
-        success     : function(res){ }
-    });
+    ajaxPost(formData, "/src/php/Server.php");
 }
 
-//interfolio
-//hifolio
-//postfolio
-//portfolism
-//benefolio
 //"profolio"
-//extrafolio
-//portpolyo(io)
-//codefolio
-//doctype portfolio
-//metafolio  이미 있음
-//monofolio  이미 있음
-//polyfolio  이미 있음
-//perifolio  이미 있음 (스페인어)
-//transfolio 이미 있음
-//tetrafolio 이미 있음

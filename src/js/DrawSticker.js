@@ -190,5 +190,4 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", rotateDiv);
     body.removeEventListener("mousemove", moveDiv);
     document.querySelector("html").removeEventListener("mousemove", movePostViewer);
-    doc_viewer.style.zIndex = "0";
 });
