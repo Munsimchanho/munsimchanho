@@ -24,8 +24,19 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'DietDidot Italic';
+    src: url("../font/didot/DietDidotTitleW03-Italic.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
- 
+@font-face {
+    font-family: 'DietDidot Regular';
+    src: url("../font/didot/DietDidotTitleW03-Regular.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 #show-user-grid-btn{
     --radius: 4em; /* 4vw */
@@ -69,20 +80,24 @@
 
 
 #index-title h1{
+    font-family: "DietDidot Regular";
+    font-weight: normal;
     margin: 0px;
-    font-size: 7em;
+    font-size: 7.5em;
     /* letter-spacing: .07em; */
-    letter-spacing: -.04em;
+    letter-spacing: -.05em;
     -webkit-background-clip: text;
     background-image: linear-gradient(90deg,#d66761 16.66666%,#f5c0b2 33.33333%,#aee8fa 50%,#68bde7 66.66666%,#6bd490 83.33333%,#a2f6cf);
 }
 
 @media only screen and (max-width: 1024px) {
     #index-title h1{
+        font-family: "DietDidot Regular";
+        font-weight: normal;
         margin: 0px;
-        font-size: 5em; /* 7vw */
+        font-size: 5.5em; /* 7vw */
         /* letter-spacing: .05em; /* .5vw */ */
-         letter-spacing: -.028em;
+         letter-spacing: -.03em;
         -webkit-background-clip: text;
         background-image: linear-gradient(90deg,#d66761 16.66666%,#f5c0b2 33.33333%,#aee8fa 50%,#68bde7 66.66666%,#6bd490 83.33333%,#a2f6cf);
     }
@@ -400,16 +415,14 @@
 }
 
  
-
-h1{
+/* 안 쓰여서 주석 처리 해둠 */
+/* h1{
     font-size: 4.5vh;
 	font-size: 10vh;
 	font-family: 'profolio';
     user-select: none;
-    /* margin: 3.15vh; */
-	/* margin-right: -20%; */
 	color: white;
-}
+} */
 
 body{
     width: 100vw;
@@ -501,6 +514,7 @@ body{
     margin: 0px;
     font-size: 3.75vw;
 	font-family: 'NotoSerifKR';
+    font-weight: normal;
 	user-select: none;
 }
 

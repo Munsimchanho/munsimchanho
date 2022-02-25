@@ -20,4 +20,7 @@
     else if ($_POST['code'] == "UploadFile"){
         move_uploaded_file($_FILES['file']['tmp_name'], "../../User/" . $_POST['user'] . "/Files/" . $_POST['name']);
     }
+    else if ($_POST['code'] == "DeleteFile"){
+        unlink($_POST['dir']);
+    }
 ?>

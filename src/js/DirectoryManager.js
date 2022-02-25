@@ -2,9 +2,39 @@ let fileLi;
 let folderLi;
 let selectedDir;
 
+let loggedIn = false;
+
+
+
+let formData_1 = new FormData();
+formData_1.append("code", "check");
+
+$.ajax({
+    url         : "/src/php/Login.php",
+    type        : "POST",
+    dataType    : 'html',
+    enctype     : "multipart/form-data",
+    processData : false,
+    contentType : false,
+    data        : formData_1,
+    async       : false,
+    success     : function(res){
+        console.log(res);
+        if (res == userName){
+            loggedIn = true;
+        }
+    }
+});
+
+
+
+
+
+
+
 //포스팅 창 닫기
 function ClosePostViewer(){
-    console.log("a");
+    // console.log("a");
     document.querySelector("#post-viewer").style.display = "none";
     document.querySelector("#veiling-div").style.display = "none";
 }
@@ -119,7 +149,8 @@ function drawUlWithId(folderId){
     
     // #hierarchy_viewer의 자식에 트리구조 생성
     for (let i = 0; i < directoryJson.length; i++){
-        if (directoryJson[i]['id'] != folderId) continue; // 원하는 노드에 대해서만 실행함
+        // 그리려고 하는 노드가 아니면 건너뜀 (원하는 노드에 대해서만 실행함)
+        if (directoryJson[i]['id'] != folderId) continue;
         
         let parentUl = document.createElement("ul");
         parentUl.appendChild(drawFolderLi(directoryJson[i]));
@@ -128,6 +159,7 @@ function drawUlWithId(folderId){
         document.getElementById(folderId).classList.remove("draggable");
         break;
     }
+    
     
     // 모든 폴더의 열고 닫힘을 적용함
     document.querySelectorAll(`input[type="checkbox"]`).forEach(checkbox => {
@@ -147,18 +179,59 @@ function drawUlWithId(folderId){
         });
         
         draggable.addEventListener("dragend", () => {
+            if (!loggedIn) return;
+            
             draggable.classList.remove("dragging");
             
             let folderDropContainer = document.querySelector(".dropContainer");
             
+            // 파일 이동
             if (folderDropContainer != null){                
                 // drag 한 객체의 id(childId)와 drop 한 객체의 id(parentId)를 받음
                 let childId = draggable.id;
                 let parentId = folderDropContainer.id;
                 
                 if (childId == parentId) return;
+                
+                let childIndex;
+                let childName;
+                let existingFileIndex;
+                let fileAlreadyExists = false;
+                                
+                for (let i = 0; i < directoryJson.length; i++){
+                    if (directoryJson[i]['id'] == childId){
+                        childName = directoryJson[i]['name'];
+                        childIndex = i;
+                        break;
+                    }
+                }
+                
+                for (let i = 0; i < directoryJson.length; i++){
+                    if (directoryJson[i]['name'] == childName && directoryJson[i]['parent'] == parentId){
+                        fileAlreadyExists = true;
+                        existingFileIndex = i;
+                        break;
+                    }
+                }
 
-                //console.log(childId + ", " + parentId);
+                // 같은 폴더에 파일이 존재하는 경우
+                if (fileAlreadyExists){
+                    // 덮어쓸 것인지 물어봄
+                    if (confirm(`${ childName } 이름의 파일이 이미 존재합니다. 덮어쓰시겠습니까?`)){
+                        // 덮어쓴다고 하면
+                        // 원래 파일 삭제
+                        let formData = new FormData();
+                        formData.append("code", "DeleteFile");
+                        formData.append("dir", directoryJson[existingFileIndex].dir);
+                        ajaxPost(formData, "/src/php/Server.php");
+                        
+                        // 원래 노드 삭제
+                        directoryJson.splice(existingFileIndex, 1);
+                    }
+                }
+                else {
+                    return;
+                }
 
                 for (let i = 0; i < directoryJson.length; i++){
                     // directoryJson 변수에서 id가 childId인 노드를 찾음
@@ -177,8 +250,10 @@ function drawUlWithId(folderId){
                 formData.append("json", JSON.stringify(directoryJson));
                 ajaxPost(formData, "/src/php/Server.php");
 
-                // isFolderOpened를 수정함
+                // isFolderClosed를 수정함
                 updateIsFolderClosed();
+                
+                showFile(childId);
             }
             
             // ul 태그를 삭제함
@@ -207,6 +282,8 @@ function drawUlWithId(folderId){
         container.addEventListener("drop", ev => {
             ev.preventDefault();
             
+            if (!loggedIn) return;
+            
             // 파일 받아옴 //👍😊
             // 파일 서버 올림, dir 설정 //👍
             // directoryJson(var) 수정 //👍
@@ -227,70 +304,42 @@ function drawUlWithId(folderId){
                     file = ev.dataTransfer.files[0];
                 }                
             }
-                        
+            
+            let existingFileIndex;
             if (file != null){
                 let fileAlreadyExists = false;
                 for (let i = 0; i < directoryJson.length; i++){
-                    if (directoryJson[i]['name'] == file['name']){
+                    if (directoryJson[i]['name'] == file['name'] && directoryJson[i]['parent'] == container.id){
                         fileAlreadyExists = true;
+                        existingFileIndex = i;
                         break;
                     }
                 }
-                                
-                if (!fileAlreadyExists){
-                    console.log("a");
-                    
-                    let curTime = Date.now();
-                    // 파일의 확장자만 따옴
-                    let ext = file.name.split(".");
-                    ext = ext[ext.length - 1].toLocaleLowerCase();
-                    
-                    const imgs = ['gif', 'jpg', 'jpeg', 'png', 'bmp' ,'ico', 'apng'];  
-                    const docs = ['pdf'];
-                    let ftype = "file";
-                    
-                    if (imgs.includes(ext)){
-                        console.log("It's an image!");
-                        ftype = "image";
+                
+                // 같은 폴더에 파일이 존재하는 경우
+                if (fileAlreadyExists){
+                    // 덮어쓸 것인지 물어봄
+                    if (confirm(`${ file.name } 이름의 파일이 이미 존재합니다. 덮어쓰시겠습니까?`)){
+                        // 덮어쓴다고 하면
+                        // 원래 파일 삭제
+                        // 파일 삭제
+                        let formData = new FormData();
+                        formData.append("code", "DeleteFile");
+                        formData.append("dir", directoryJson[existingFileIndex].dir);
+                        ajaxPost(formData, "/src/php/Server.php");
+                        
+                        // 기존 directoryJson의 노드 제거
+                        // existingFileIndex번째부터 1개 제거
+                        directoryJson.splice(existingFileIndex, 1);
+                        
+                        // 파일 업로드
+                        let res = uploadFile(file, container);
+                        
+                        if (res != "invalid") showFile(res);
                     }
-                    else if (docs.includes(ext)) {
-                        console.log("It's an docs file!");
-                        ftype = "docs";
-                    }
-                    else {
-                        return;
-                    }
-
-                    // 파일의 이름을 img0.284134985.png와 같이 랜덤하게 지정함
-                    let fname = `${ curTime }.${ ext }`;
-                    // directoryJson 수정
-                    directoryJson.push({"type": ftype, "name": file['name'], "id": curTime, "parent": container.id, "dir": `../../User/${ userName }/Files/${ fname }`});
-                    
-                    
-                    // 파일 업로드
-                    let formData = new FormData();
-                    formData.append("code", "UploadFile");
-                    formData.append("user", userName);
-                    formData.append("name", fname);
-                    formData.append("file", file);
-                    ajaxPost(formData, "/src/php/Server.php");
-                    
-                    
-                    // 수정한 directoryJson을 서버에 올림
-                    formData = new FormData();
-                    formData.append("code", "UpdateDirectoryInfo");
-                    formData.append("user", userName);
-                    formData.append("json", JSON.stringify(directoryJson));
-                    ajaxPost(formData, "/src/php/Server.php");
-                    
-                    // isFolderOpened를 수정함
-                    updateIsFolderClosed();
-                    
-                    // ul 태그를 삭제함
-                    document.querySelector("#hierarchy-viewer ul").remove();
-                    
-                    // ul 다시 그리기
-                    drawUlWithId(selectedDir);
+                }
+                else{
+                    let res = uploadFile(file, container);
                 }
             }
         });
@@ -298,11 +347,113 @@ function drawUlWithId(folderId){
 }
 
 
+function checkExtension(ext){
+    const imgs = ['gif', 'jpg', 'jpeg', 'png', 'bmp' ,'ico', 'apng'];  
+    const docs = ['pdf'];
+    let ftype = "invalid";
+
+    if (imgs.includes(ext)){
+        console.log("It's an image!");
+        ftype = "image";
+    }
+    else if (docs.includes(ext)) {
+        console.log("It's an docs file!");
+        ftype = "docs";
+    }
+    else {
+        ftype = "invalid";
+    }
+    
+    return ftype;
+}
+
+function uploadFile(file, container){
+    if (!loggedIn) return "invalid";
+    
+    let curTime = Date.now();
+    // 파일의 확장자만 따옴
+    let ext = file.name.split(".");
+    ext = ext[ext.length - 1].toLocaleLowerCase();
+    
+    let ftype = checkExtension(ext);
+    if (ftype == "invalid"){
+        return "invalid";
+    }
+
+    // 파일의 이름을 img0.284134985.png와 같이 랜덤하게 지정함
+    let fname = `${ curTime }.${ ext }`;
+    // directoryJson 수정
+    directoryJson.push({"type": ftype, "name": file['name'], "id": curTime, "parent": container.id, "dir": `../../User/${ userName }/Files/${ fname }`});
 
 
+    // 파일 업로드
+    let formData = new FormData();
+    formData.append("code", "UploadFile");
+    formData.append("user", userName);
+    formData.append("name", fname);
+    formData.append("file", file);
+    ajaxPost(formData, "/src/php/Server.php");
+    
+    // 수정한 directoryJson을 서버에 올림
+    formData = new FormData();
+    formData.append("code", "UpdateDirectoryInfo");
+    formData.append("user", userName);
+    formData.append("json", JSON.stringify(directoryJson));
+    ajaxPost(formData, "/src/php/Server.php");
 
+    // isFolderOpened를 수정함
+    updateIsFolderClosed();
 
+    // ul 태그를 삭제함
+    document.querySelector("#hierarchy-viewer ul").remove();
 
+    // ul 다시 그리기
+    drawUlWithId(selectedDir);
+    
+    return curTime;
+}
+
+function showFile(id){
+    for (let j = 0; j < directoryJson.length; j++){
+        if (directoryJson[j]['id'] == id){
+            let dir = directoryJson[j]['dir'];
+
+            switch (directoryJson[j]['type']){
+                case 'image':
+                    document.querySelector("#document-viewer").remove();
+                    doc_viewer = document.createElement("img");
+                    doc_viewer.src = dir;
+                    doc_viewer.style.zIndex = "-1";
+                    break;
+
+                case 'docs':
+                    document.querySelector("#document-viewer").remove();
+                    // doc_viewer = document.createElement("iframe");
+                    // doc_viewer.classList.add("docs");
+                    // doc_viewer.src = dir + "#toolbar=0&navpanes=0&scrollbar=0";
+
+                    doc_viewer = document.createElement("object");
+                    doc_viewer.data = dir + "#toolbar=0&navpanes=0&scrollbar=0";
+
+                    doc_viewer.style.zIndex = "0";
+                    break;
+
+                case 'website-url':
+                    document.querySelector("#document-viewer").remove();
+                    doc_viewer = document.createElement("iframe");
+                    doc_viewer.src = dir;
+                    break;
+            }
+            doc_viewer.id = "document-viewer";
+            doc_viewer.draggable = false;
+            right_viewer.appendChild(doc_viewer);
+            resizeDocViewer();
+            break;
+        }
+    }
+}
+
+// 폴더 li 생성 함수
 function drawFolderLi(node){
     // 자식 객체를 포함하는 폴더 li 생성
     let li = document.createElement("li");
@@ -341,8 +492,13 @@ function drawFolderLi(node){
     innerLi.appendChild(checkbox);
     innerLi.appendChild(iconLabel);
     innerLi.appendChild(nameLabel);
-    innerLi.className = "folderLi draggable container";
-    innerLi.draggable = "true";
+    innerLi.className = "folderLi";
+    
+    if (loggedIn) {
+        innerLi.classList.add("draggable");
+        innerLi.classList.add("container");
+        innerLi.draggable = "true";
+    }
 
     // 클릭하면 selected라는 className 부여
     innerLi.addEventListener("mousedown", () => {
@@ -363,15 +519,19 @@ function drawFolderLi(node){
     return li;
 }
 
+// 파일 li 생성 함수
 function drawFileLi(node){
     // 파일 li 생성
     let li = document.createElement("li");
     li.id = node['id'];
-    li.className = "fileLi draggable";
-    li.draggable = "true";
+    li.className = "fileLi";
+    if (loggedIn) {
+        li.classList.add("draggable");
+        li.draggable = "true";
+    }
 
     // label을 담을 div 생성
-    let divElem = document.createElement("div");                
+    let divElem = document.createElement("div");
 
     // 파일 이름 용 label
     let nameLabel = document.createElement("label");
@@ -390,39 +550,7 @@ function drawFileLi(node){
 
     // 더블 클릭
     divElem.addEventListener('dblclick', () => {
-        for (let j = 0; j < directoryJson.length; j++){
-            if (directoryJson[j]['id'] == divElem.parentNode.id){
-                let dir = directoryJson[j]['dir'];
-
-                switch (directoryJson[j]['type']){
-                    case 'image':
-                        document.querySelector("#document-viewer").remove();
-                        doc_viewer = document.createElement("img");
-                        doc_viewer.src = dir;
-                        doc_viewer.style.zIndex = "-1";
-                        break;
-                        
-                    case 'docs':
-                        document.querySelector("#document-viewer").remove();
-                        doc_viewer = document.createElement("iframe");
-                        doc_viewer.classList.add("docs");
-                        doc_viewer.src = dir + "#toolbar=0&navpanes=0&scrollbar=0";
-                        doc_viewer.style.zIndex = "0";
-                        break;
-
-                    case 'website-url':
-                        document.querySelector("#document-viewer").remove();
-                        doc_viewer = document.createElement("iframe");
-                        doc_viewer.src = dir;
-                        break;
-                }
-                doc_viewer.id = "document-viewer";
-                doc_viewer.draggable = false;
-                right_viewer.appendChild(doc_viewer);
-                resizeDocViewer();
-                break;
-            }
-        }
+        showFile(divElem.parentNode.id);
     });
 
     // 파일 divElem에 label 추가
@@ -457,3 +585,127 @@ function ajaxPost(formData, url){
         success     : function(res){ }
     });
 }
+
+function findIndexWithId(id, list){
+    for (let i = 0; i < list.length; i++){
+        if (list[i].id == id){
+            return i;
+        }
+    }
+    
+    return -1;
+}
+
+function findIndexWithName(name, list){
+    for (let i = 0; i < list.length; i++){
+        if (list[i].name == name){
+            return i;
+        }
+    }
+    
+    return -1;
+}
+
+document.addEventListener("keydown", e => {
+    if (!loggedIn) return;
+    
+    if (e.key == "Delete"){        
+        let selectedLi = document.querySelector(".selected");
+        let id;
+        if (selectedLi == null) return;
+        if (selectedLi.classList.contains("folderLi")){
+            id = selectedLi.id;
+        }
+        else{
+            id = selectedLi.parentNode.id;
+        }
+        
+        let index = findIndexWithId(id, directoryJson);
+        
+        if (directoryJson[index]['parent'] == "root") {
+            alert("이 폴더는 삭제할 수 없습니다.");
+            return;
+        }
+        
+        if (confirm("정말 삭제하시겠습니까?")){
+            // 파일 삭제
+            let formData = new FormData();
+            formData.append("code", "DeleteFile");
+            formData.append("dir", directoryJson[index].dir);
+            ajaxPost(formData, "/src/php/Server.php");
+
+            // 기존 directoryJson의 노드 제거
+            // index 1개 제거
+            directoryJson.splice(index, 1);
+            
+            // 수정한 directoryJson을 서버에 올림
+            formData = new FormData();
+            formData.append("code", "UpdateDirectoryInfo");
+            formData.append("user", userName);
+            formData.append("json", JSON.stringify(directoryJson));
+            ajaxPost(formData, "/src/php/Server.php");
+
+            // isFolderOpened를 수정함
+            updateIsFolderClosed();
+
+            // ul 태그를 삭제함
+            document.querySelector("#hierarchy-viewer ul").remove();
+
+            // ul 다시 그리기
+            drawUlWithId(selectedDir);
+        }
+    }
+    
+    if (e.key === "F2"){
+        let selectedLi = document.querySelector(".selected");
+        let id;
+        if (selectedLi == null) return;
+        if (selectedLi.classList.contains("folderLi")){
+            id = selectedLi.id;
+        }
+        else{
+            id = selectedLi.parentNode.id;
+        }
+        
+        let index = findIndexWithId(id, directoryJson);
+        
+        if (directoryJson[index]['parent'] == "root") {
+            alert("이 폴더는 이름을 변경할 수 없습니다.");
+            return;
+        }
+        
+        let name = prompt("변경할 이름을 입력하세요.");
+        if (name == null || name.trim() == ""){
+            alert("이름을 정의할 수 없습니다.");
+            return;
+        }
+        else{
+            name = name.trim();
+            for (let i = 0; i < directoryJson.length; i++){
+                if (directoryJson[i]['parent'] == directoryJson[index]['parent'] && directoryJson[i]['name'] == name){
+                    console.log(name + ", " + directoryJson[i]['name']);
+                    alert("같은 이름의 파일이 이미 존재합니다.");
+                    return;
+                }
+            } 
+            
+            directoryJson[index]['name'] = name;
+        }
+        
+        // 수정한 directoryJson을 서버에 올림
+        let formData = new FormData();
+        formData.append("code", "UpdateDirectoryInfo");
+        formData.append("user", userName);
+        formData.append("json", JSON.stringify(directoryJson));
+        ajaxPost(formData, "/src/php/Server.php");
+
+        // isFolderOpened를 수정함
+        updateIsFolderClosed();
+        
+        // ul 태그를 삭제함
+        document.querySelector("#hierarchy-viewer ul").remove();
+
+        // ul 다시 그리기
+        drawUlWithId(selectedDir);
+    }
+})

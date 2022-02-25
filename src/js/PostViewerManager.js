@@ -18,13 +18,13 @@ function resizeDocViewer(){
     if (doc_viewer.tagName.toLocaleLowerCase() == "iframe" && !doc_viewer.classList.contains("docs")){
         let doc_viewer_scaler = parseFloat(right_viewer_style.width) / 1600;
     
-        doc_viewer.style.height = (1600 * parseFloat(right_viewer_style.height) / parseFloat(right_viewer_style.width)) + "px";
+        doc_viewer.style.height = ((1600 * parseFloat(right_viewer_style.height) / parseFloat(right_viewer_style.width)) - 2) + "px";
 
         doc_viewer.style.transform = `translate(${ -50 * (1-doc_viewer_scaler) }%, ${ -50 * (1-doc_viewer_scaler) }%) scale(${ doc_viewer_scaler })`;
     }
     else {
         doc_viewer.style.width  = right_viewer_style.width ;
-        doc_viewer.style.height = right_viewer_style.height;
+        doc_viewer.style.height = `calc(${ right_viewer_style.height } - 2px)`;
     }
 }
 

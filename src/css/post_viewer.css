@@ -73,7 +73,7 @@
 
 #hierarchy-viewer ul{
 	list-style: none;
-    padding-left: 30px;
+    padding-left: 20px;
 }
 
 .label-file:before{
@@ -115,13 +115,15 @@ right-viewer의 width와 height를 100vw, 100vh로 지정하여 화면의 크기
 */
 
 #right-viewer{
+    position: relative;
     height: 100%;
     border-radius: 0px 20px 20px 0px;
 }
 
 #document-viewer{
     position: absolute;
-	border-radius: 0px 0px 20px 0px;
-	width: 1600px;
-	height: 900px;
+	border-radius: 0px 0px 13px 0px;
+    top: 2px;
+    width: auto;
+    height: auto;
 }
