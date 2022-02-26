@@ -24,7 +24,7 @@ function clamp(val, min, max){
 }
 
 function moveImage(e){ 
-    let parstyle = window.getComputedStyle(doc_viewer);
+    let parstyle = window.getComputedStyle(right_viewer);
     let style = window.getComputedStyle(img_viewer);
     let mtrx = style.transform;
 

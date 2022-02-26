@@ -27,8 +27,7 @@ upper_bar.addEventListener("mousedown", () => {
 });
 
 upper_bar.addEventListener("dblclick", () => {
-    // iframe에 event를 뺏기지 않도록 div로 막음
-    doc_viewer.style.zIndex = "-1";
+    doc_viewer.style.zIndex = "0";
     
     if (!isFullScreen) fullscreen_pv();
     else defullscreen_pv();
@@ -162,7 +161,7 @@ function resizeDocViewer(){
 
         doc_viewer.style.transform = `translate(${ -50 * (1-doc_viewer_scaler) }%, ${ -50 * (1-doc_viewer_scaler) }%) scale(${ doc_viewer_scaler })`;
     }
-    else {        
+    else{        
         doc_viewer.style.width  = right_viewer_style.width ;
         doc_viewer.style.height = `calc(${ right_viewer_style.height } - 2px)`;
     }

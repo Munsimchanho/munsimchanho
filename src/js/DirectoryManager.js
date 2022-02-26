@@ -417,6 +417,7 @@ function createImage(dir){
     img_viewer = document.createElement("img");
     img_viewer.id = "image-content";
     img_viewer.src = dir;
+    img_viewer.style.display = "none";
     img_viewer.draggable = false;
     doc_viewer.appendChild(img_viewer);
 
@@ -424,11 +425,17 @@ function createImage(dir){
         let doc_style = window.getComputedStyle(doc_viewer);
         let img_style = window.getComputedStyle(img_viewer);
         
+        img_scale = 1;
+        
+        img_viewer.style.display = "block";
+        
         // 가로가 더 짧음
         if (parseFloat(doc_style.width) / parseFloat(doc_style.height) < parseFloat(img_style.width) / parseFloat(img_style.height)){
+            console.log("hor");
             img_viewer.style.width = "100%";
         }
         else{
+            console.log("ver");
             img_viewer.style.height = "100%";
         }
     };

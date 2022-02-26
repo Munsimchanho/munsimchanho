@@ -204,4 +204,6 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", resize_pv_br);
     
     body.removeEventListener("mousemove", moveImage);
+    
+    doc_viewer.style.zIndex = "0";
 });
