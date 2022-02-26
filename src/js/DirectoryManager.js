@@ -413,6 +413,35 @@ function uploadFile(file, container){
     return curTime;
 }
 
+function createImage(dir){
+    img_viewer = document.createElement("img");
+    img_viewer.id = "image-content";
+    img_viewer.src = dir;
+    img_viewer.draggable = false;
+    doc_viewer.appendChild(img_viewer);
+
+    img_viewer.onload = () => {
+        let doc_style = window.getComputedStyle(doc_viewer);
+        let img_style = window.getComputedStyle(img_viewer);
+        
+        // 가로가 더 짧음
+        if (parseFloat(doc_style.width) / parseFloat(doc_style.height) < parseFloat(img_style.width) / parseFloat(img_style.height)){
+            img_viewer.style.width = "100%";
+        }
+        else{
+            img_viewer.style.height = "100%";
+        }
+    };
+
+    doc_viewer.addEventListener("mousedown", () => {
+        body.addEventListener("mousemove", moveImage);
+    });
+
+    doc_viewer.addEventListener("wheel", e => {
+        resizeImage(e);
+    });
+}
+
 function showFile(id){
     for (let j = 0; j < directoryJson.length; j++){
         if (directoryJson[j]['id'] == id){
@@ -421,9 +450,11 @@ function showFile(id){
             switch (directoryJson[j]['type']){
                 case 'image':
                     document.querySelector("#document-viewer").remove();
-                    doc_viewer = document.createElement("img");
-                    doc_viewer.src = dir;
-                    doc_viewer.style.zIndex = "-1";
+                    doc_viewer = document.createElement("div");
+                    
+                    createImage(dir);
+                    
+                    doc_viewer.style.zIndex = 1;
                     break;
 
                 case 'docs':

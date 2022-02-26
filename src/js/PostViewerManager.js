@@ -93,12 +93,12 @@ function resize_pv_b(e){
     resize_pv(-1, 0, e.clientX, e.clientY);
 }
 
-function resize_pv(vir, hor, x, y){
+function resize_pv(ver, hor, x, y){
     if (isFullScreen) return;
     
     let style = window.getComputedStyle(post_viewer);
     
-    let ax = parseFloat(style.left) + hor * .5 * parseFloat(style.width), ay = parseFloat(style.top) + vir * .5 * parseFloat(style.height);
+    let ax = parseFloat(style.left) + hor * .5 * parseFloat(style.width), ay = parseFloat(style.top) + ver * .5 * parseFloat(style.height);
     let dx = Math.abs(ax - x), dy = Math.abs(ay - y);
     if (hor != 0 && dx > 700){
         post_viewer.style.width  = dx + "px";
@@ -106,11 +106,11 @@ function resize_pv(vir, hor, x, y){
         post_viewer.style.left   = (ax - hor * .5 * dx) + "px";
         pl = (ax - hor * .5 * dx) + "px";
     }
-    if (vir != 0 && dy > 400){
+    if (ver != 0 && dy > 400){
         post_viewer.style.height = dy + "px";
         pvh = dy + "px";
-        post_viewer.style.top    = (ay - vir * .5 * dy) + "px";
-        pt = (ay - vir * .5 * dy) + "px";
+        post_viewer.style.top    = (ay - ver * .5 * dy) + "px";
+        pt = (ay - ver * .5 * dy) + "px";
     }
     
     
@@ -154,7 +154,6 @@ function defullscreen_pv(){
 
 
 
-
 function resizeDocViewer(){
     if (doc_viewer.tagName.toLocaleLowerCase() == "iframe" && !doc_viewer.classList.contains("docs")){
         let doc_viewer_scaler = parseFloat(right_viewer_style.width) / 1600;
@@ -163,7 +162,7 @@ function resizeDocViewer(){
 
         doc_viewer.style.transform = `translate(${ -50 * (1-doc_viewer_scaler) }%, ${ -50 * (1-doc_viewer_scaler) }%) scale(${ doc_viewer_scaler })`;
     }
-    else {
+    else {        
         doc_viewer.style.width  = right_viewer_style.width ;
         doc_viewer.style.height = `calc(${ right_viewer_style.height } - 2px)`;
     }

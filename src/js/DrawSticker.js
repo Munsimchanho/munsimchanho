@@ -202,4 +202,6 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", resize_pv_tr);
     body.removeEventListener("mousemove", resize_pv_bl);
     body.removeEventListener("mousemove", resize_pv_br);
+    
+    body.removeEventListener("mousemove", moveImage);
 });
