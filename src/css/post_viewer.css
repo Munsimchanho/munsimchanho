@@ -1,8 +1,8 @@
 #post-viewer{
 	position: absolute;
     display: none;
-    grid-template-columns: 1fr 3fr;
-    grid-template-rows: 35px auto;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 35px auto 0px 0px;
 	width: 1000px;
     height: 750px;
 	border: solid 2px;
@@ -19,7 +19,9 @@
 	background-color: lightgray;
     grid-column: 1 / span 2;
     margin-top: 1px;
-	border-radius: 15px 15px 0px 0px;    
+	/* border-radius: inherit inherit 0px 0px; */
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
     border-bottom: solid 2px;
 	/* border-top: solid 2px; */
     height: 100%;
@@ -117,13 +119,113 @@ right-viewer의 width와 height를 100vw, 100vh로 지정하여 화면의 크기
 #right-viewer{
     position: relative;
     height: 100%;
-    border-radius: 0px 20px 20px 0px;
+    /* border-radius: 0px 20px 20px 0px; */
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
 }
 
 #document-viewer{
     position: absolute;
-	border-radius: 0px 0px 13px 0px;
+	/* border-radius: 0px 0px 13px 0px; */
+    border-bottom-right-radius: inherit;
     top: 2px;
     width: auto;
     height: auto;
+}
+
+:root{
+    --w: 7px;
+}
+
+/*------ resizer ------*/
+#post-viewer-resizer-l{
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    width: var(--w);
+    height: calc(100% - 2 * var(--w) - 4px);
+    transform: translate(-50%, -50%);
+    /* border: solid 2px; */
+    cursor: ew-resize;
+}
+
+#post-viewer-resizer-r{
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    width: var(--w);
+    height: calc(100% - 2 * var(--w) - 4px);
+    transform: translate(50%, -50%);
+    /* border: solid 2px; */
+    cursor: ew-resize;
+}
+
+#post-viewer-resizer-t{
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    width: calc(100% - 2 * var(--w) - 4px);
+    height: var(--w);
+    transform: translate(-50%, -50%);
+    /* border: solid 2px; */
+    
+    cursor: ns-resize;
+}
+
+#post-viewer-resizer-b{
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    width: calc(100% - 2 * var(--w) - 4px);
+    height: var(--w);
+    transform: translate(-50%, 50%);
+    /* border: solid 2px; */
+    
+    cursor: ns-resize;
+}
+
+#post-viewer-resizer-tl{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: var(--w);
+    height: var(--w);
+    /* transform: translate(0%, -50%); */
+    /* border: solid 2px; */
+    cursor: nw-resize;
+}
+
+#post-viewer-resizer-tr{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: var(--w);
+    height: var(--w);
+    /* transform: translate(50%, -50%); */
+    /* border: solid 2px; */
+    cursor: ne-resize;
+}
+
+#post-viewer-resizer-bl{
+    position: absolute;
+    left: 0px%;
+    bottom: 0px;
+    width: var(--w);
+    height: var(--w);
+    /* transform: translate(-50%, 50%); */
+    /* border: solid 2px; */
+    
+    cursor: ne-resize;
+}
+
+#post-viewer-resizer-br{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: var(--w);
+    height: var(--w);
+    /* transform: translate(50%, 50%); */
+    /* border: solid 2px; */
+    
+    cursor: nw-resize;
 }

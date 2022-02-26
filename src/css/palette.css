@@ -3,6 +3,7 @@ body{
     height: 100vh;
     margin: 0px;
 	/* background-color: lightcoral; */
+    user-select: none;
 }
 
 #veiling-div{

@@ -588,6 +588,8 @@ function ajaxPost(formData, url){
 
 function findIndexWithId(id, list){
     for (let i = 0; i < list.length; i++){
+        if (list[i] == null) continue;
+        
         if (list[i].id == id){
             return i;
         }

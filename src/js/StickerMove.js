@@ -3,8 +3,10 @@
 function moveDiv(e){    
     if (!Editing) return;
     
+    console.log("move2");
+    let divStyle = window.getComputedStyle(editingDiv);
     // left값과 top값을 불러와 l, t에 저장
-    let l = parseFloat(editingDiv.style.left), t = parseFloat(editingDiv.style.top);
+    let l = parseFloat(divStyle.left), t = parseFloat(divStyle.top);
     
     // left와 top의 값에 마우스의 움직인 거리를 더해 저장
     editingDiv.style.left = (l + e.movementX) + "px";

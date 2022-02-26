@@ -1,6 +1,6 @@
 let palette = document.getElementById("palette");
 let stickers = [];
-let json;
+let stickerJson;
 let body = document.querySelector("body");
 let userName = getUrlParams()['user'];
 
@@ -17,30 +17,30 @@ function getUrlParams() {
     return params; 
 }
 
-// StickerInfo.json을 가져와서 json이라는 변수에 저장함
+// StickerInfo.json을 가져와서 stickerJson 변수에 저장함
 $.ajax({ 
     url: `/User/${ userName }/StickerInfo.json`,
     method: "GET", 
     dataType: "json" 
    })
 .done(function(data) {
-    json = data;
+    stickerJson = data;
     console.log(data);
     
     // palette div에 스티커 div 생성
-    for (let i = 0; i < json.length; i++){
-        palette.appendChild(drawSticker(i, json[i]));
+    for (let i = 0; i < stickerJson.length; i++){
+        palette.appendChild(drawSticker(i, stickerJson[i]));
     }
 });
 
 function drawSticker(index, data){
     let sticker = document.createElement("div");
-    sticker.id = "Sticker_" + index;
+    sticker.id = "Sticker_" + data['dir'];
     sticker.className = "sticker";
     sticker.draggable = false;
     
     let image = document.createElement("img");
-    image.src = data['imgDir'];
+    if (data['imgDir'] != "none") image.src = data['imgDir'];
     image.draggable = false;
     
     let stickerText = document.createElement("h1");
@@ -132,11 +132,12 @@ function showPostViewer(sticker, index){
     editingDiv = sticker;
     if (Editing){
         stickerEditButton.style.opacity = 1;
+        deleteStickerButton.style.opacity = 1;
         displayEdges_only(sticker, true);
     }
     else{                        
         // 변수에 현재 열고 있는 폴더 id를 저장
-        selectedDir = json[index]['dir'];
+        selectedDir = stickerJson[index]['dir'];
 
         // ul 태그를 지운 후 새로 그림
         document.querySelector("#hierarchy-viewer ul").remove();
@@ -158,6 +159,7 @@ function showPostViewer(sticker, index){
         // document-viewer의 크기를 다시 지정
         resizeDocViewer();
     }
+
     body.addEventListener("mousemove", moveDiv);
 }
 
@@ -190,4 +192,14 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", rotateDiv);
     body.removeEventListener("mousemove", moveDiv);
     document.querySelector("html").removeEventListener("mousemove", movePostViewer);
+    
+    body.removeEventListener("mousemove", resize_pv_l);
+    body.removeEventListener("mousemove", resize_pv_r);
+    body.removeEventListener("mousemove", resize_pv_t);
+    body.removeEventListener("mousemove", resize_pv_b);
+    
+    body.removeEventListener("mousemove", resize_pv_tl);
+    body.removeEventListener("mousemove", resize_pv_tr);
+    body.removeEventListener("mousemove", resize_pv_bl);
+    body.removeEventListener("mousemove", resize_pv_br);
 });
