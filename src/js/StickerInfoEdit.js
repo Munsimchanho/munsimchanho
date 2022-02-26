@@ -65,7 +65,7 @@ function AddSticker(){
             editingDiv = drawSticker(index, stickerJson[index]);
             palette.appendChild(editingDiv);
             
-            
+            isFolderClosed[String(id)] = true;
             
             editingDiv.querySelector("img").src = TempImageURLS[index];
         }

@@ -45,6 +45,8 @@ function selectLi(elem){
     let uls = elem.parentNode.parentNode.querySelector("ul");
     // checked가 true면 닫힘
     uls.style.display = (elem.checked == true) ? "none": "list-item";
+    
+    uls.style.width = "fit-content";
 }
 
 // 특정 노드에 대해 자식 폴더/파일을 li, ul로 생성
@@ -98,12 +100,12 @@ function drawUl(node){
         }
     }
     
+    
     return ul;
 }
 
 
 let directoryJson;
-let hierarchy_viewer = document.getElementById("hierarchy-viewer");
 let isFolderClosed = {}; // dictionary/ "id": true/false
 
 // 서버에서 DirectoryInfo.json파일을 받아옴, ul 객체를 그림
@@ -186,7 +188,7 @@ function drawUlWithId(folderId){
             let folderDropContainer = document.querySelector(".dropContainer");
             
             // 파일 이동
-            if (folderDropContainer != null){                
+            if (folderDropContainer != null){ 
                 // drag 한 객체의 id(childId)와 drop 한 객체의 id(parentId)를 받음
                 let childId = draggable.id;
                 let parentId = folderDropContainer.id;
@@ -205,6 +207,7 @@ function drawUlWithId(folderId){
                         break;
                     }
                 }
+                console.log("dropped");
                 
                 for (let i = 0; i < directoryJson.length; i++){
                     if (directoryJson[i]['name'] == childName && directoryJson[i]['parent'] == parentId){
@@ -228,10 +231,11 @@ function drawUlWithId(folderId){
                         // 원래 노드 삭제
                         directoryJson.splice(existingFileIndex, 1);
                     }
+                    else {
+                        return;
+                    }
                 }
-                else {
-                    return;
-                }
+                
 
                 for (let i = 0; i < directoryJson.length; i++){
                     // directoryJson 변수에서 id가 childId인 노드를 찾음
@@ -413,6 +417,21 @@ function uploadFile(file, container){
     return curTime;
 }
 
+function initiate_image_viewer(){
+    if (document.querySelector("#document-viewer")) document.querySelector("#document-viewer").remove();
+    
+    doc_viewer = document.createElement("div");
+    right_viewer.appendChild(doc_viewer);
+
+    createImage("/Img/start_postviewer.jpg");
+
+    doc_viewer.style.zIndex = 1;
+    
+    doc_viewer.id = "document-viewer";
+    doc_viewer.draggable = false;
+    resizeDocViewer();
+}
+
 function createImage(dir){
     img_viewer = document.createElement("img");
     img_viewer.id = "image-content";
@@ -491,6 +510,46 @@ function showFile(id){
     }
 }
 
+function createFolder(node){
+    let folderName = prompt("생성할 폴더의 이름을 입력하세요.");
+    if (folderName != null || folderName.trim() == ""){
+        for (let i = 0; i < directoryJson.length; i++){
+            if (directoryJson[i]['parent'] == node['id'] && directoryJson[i]['name'] == folderName){
+                alert("같은 이름의 폴더가 이미 존재합니다.");
+                return;
+            }
+        }
+        
+        
+        let id = Date.now();
+        folderName = folderName.trim();
+        directoryJson.push({"type":"folder","name":folderName,"id":id,"parent":node['id']});
+        
+        // 수정한 directoryJson을 서버에 올림
+        let formData = new FormData();
+        formData.append("code", "UpdateDirectoryInfo");
+        formData.append("user", userName);
+        formData.append("json", JSON.stringify(directoryJson));
+        ajaxPost(formData, "/src/php/Server.php");
+
+        isFolderClosed[String(id)] = true;
+        
+        // isFolderOpened를 수정함
+        updateIsFolderClosed();
+
+        // ul 태그를 삭제함
+        document.querySelector("#hierarchy-viewer ul").remove();
+
+        // ul 다시 그리기
+        drawUlWithId(selectedDir);
+        
+        
+    }
+    else{
+        alert("유효하지 않은 이름입니다.");
+    }
+}
+
 // 폴더 li 생성 함수
 function drawFolderLi(node){
     // 자식 객체를 포함하는 폴더 li 생성
@@ -537,7 +596,14 @@ function drawFolderLi(node){
         innerLi.classList.add("container");
         innerLi.draggable = "true";
     }
-
+    
+    let addFolderButton = document.createElement("img");
+    addFolderButton.className = "add-folder-btn";
+    addFolderButton.src = "/Img/test/plus.svg";
+    addFolderButton.addEventListener("mousedown", () => {
+        createFolder(node);
+    });
+    
     // 클릭하면 selected라는 className 부여
     innerLi.addEventListener("mousedown", () => {
         // 이미 selected 된 객체가 있을 수 있음
@@ -547,9 +613,12 @@ function drawFolderLi(node){
         // 선택한 객체에 selected라는 className 부여
         innerLi.classList.add("selected");
     });
+    
+    innerLi.appendChild(addFolderButton);
 
     // 폴더 전체 li에 innerLi를 추가
     li.appendChild(innerLi);
+    li.style.display = "block";
 
     // 폴더 전체 li에 자식 객체(파일/폴더) 추가
     li.appendChild(drawUl(node));
@@ -563,6 +632,9 @@ function drawFileLi(node){
     let li = document.createElement("li");
     li.id = node['id'];
     li.className = "fileLi";
+    li.style.minWidth = "calc(100% - 20px)";
+    li.style.width = "fit-content";
+
     if (loggedIn) {
         li.classList.add("draggable");
         li.draggable = "true";
@@ -575,7 +647,8 @@ function drawFileLi(node){
     let nameLabel = document.createElement("label");
     nameLabel.innerHTML = node['name'];
     nameLabel.className = "label-file";
-
+    nameLabel.style.display = "inline-block";
+    
     // 클릭하면 selected라는 className 부여
     divElem.addEventListener("mousedown", () => {
         // 이미 selected 된 객체가 있을 수 있음
@@ -590,10 +663,12 @@ function drawFileLi(node){
     divElem.addEventListener('dblclick', () => {
         showFile(divElem.parentNode.id);
     });
-
+    
+    divElem.style.minWidth = "100%";
+    divElem.style.width = "fit-content";
+    
     // 파일 divElem에 label 추가
     divElem.appendChild(nameLabel);
-
 
     // 파일 li에 divElem 추가
     li.appendChild(divElem);
@@ -601,7 +676,7 @@ function drawFileLi(node){
     return li;
 }
 
-function updateIsFolderClosed(){
+function updateIsFolderClosed(){    
     for (let i = 0; i < directoryJson.length; i++){
         if (directoryJson[i]['type'] != "folder") continue;
         let cb = document.getElementById(`${ directoryJson[i]['id'] }-checkbox`);

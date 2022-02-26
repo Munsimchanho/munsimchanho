@@ -1,7 +1,13 @@
+:root{
+    --w: 9px;
+    --hier-w: 250px;
+}
+
+
 #post-viewer{
 	position: absolute;
     display: none;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: var(--hier-w) 1fr;
     grid-template-rows: 35px auto 0px 0px;
 	width: 1000px;
     height: 750px;
@@ -46,11 +52,29 @@
     transform: translateX(-50%);
 }
 
+/*------ left-viewer ------*/
+#left-viewer{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+    border-right: solid 2px;
+}
+
+#hierarchy-title{
+    position: relative;
+    border-bottom: solid 1px;
+}
 
 /*------ hierarchy-viewer ------*/
 #hierarchy-viewer{
-    border-right: solid 2px;
-    height: 100%;
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: auto;
+    
+    flex: auto;
 }
 
 #post-title{
@@ -67,15 +91,30 @@
 #hierarchy-viewer input[type="checkbox"]:checked+.label-folder:before{
     content: '\e801';
     font-family: fontello;
+    letter-spacing: 9px;
 }
 
 #hierarchy-viewer .selected{
     background-color: #ddd;
 }
 
-#hierarchy-viewer ul{
-	list-style: none;
+#hierarchy-viewer li{
+    
     padding-left: 20px;
+}
+
+#hierarchy-viewer ul{
+    position: relative;
+    display: block;
+    min-width: 100%;
+    width: fit-content;
+	list-style: none;
+    padding-left: 0px;
+}
+
+#hierarchy-viewer>ul{
+    position: relative;
+    display: block;
 }
 
 .label-file:before{
@@ -91,11 +130,31 @@
 /*글자 선택 안 되게(파랑 안 뜨게)*/
 #hierarchy-viewer label {
     user-select: none;
+    display: inline-block;
 }
 
 #hierarchy-viewer label:before{
-	display: inline-block;
-    width: 25px;
+	display: inline;
+    letter-spacing: 6.5px;
+    
+}
+
+.fileLi{
+    width: 100%;
+}
+
+.add-folder-btn{
+    position: absolute;
+    display: none;
+    width: 11.5px;
+    height: 11.5px;
+    margin-top: 5px;
+    margin-left: 15px;
+    z-index: 10;
+}
+
+.selected .add-folder-btn{
+    display: inline-block;
 }
 
 /*------ right-viewer ------*/
@@ -138,7 +197,7 @@ right-viewer의 width와 height를 100vw, 100vh로 지정하여 화면의 크기
     height: auto;
     background: white;
     
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);    
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     overflow: hidden;
 }
 
@@ -149,8 +208,16 @@ right-viewer의 width와 height를 100vw, 100vh로 지정하여 화면의 크기
     transform: translate(0px, 0px);
 }
 
-:root{
-    --w: 7px;
+/*------ hierarchy-viewer resizer ------*/
+#hierarchy-viewer-resizer{
+    position: absolute;
+    left: var(--hier-w);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--w);
+    height: calc(100% - 2 * var(--w) - 4px);
+    z-index: 2;
+    cursor: col-resize;
 }
 
 /*------ resizer ------*/

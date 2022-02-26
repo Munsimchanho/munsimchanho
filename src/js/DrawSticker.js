@@ -129,6 +129,8 @@ function drawSticker(index, data){
 }
 
 function showPostViewer(sticker, index){
+    console.log("a");
+    
     editingDiv = sticker;
     if (Editing){
         stickerEditButton.style.opacity = 1;
@@ -142,7 +144,8 @@ function showPostViewer(sticker, index){
         // ul 태그를 지운 후 새로 그림
         document.querySelector("#hierarchy-viewer ul").remove();
         drawUlWithId(selectedDir);
-
+        
+        
         // selectedDir을 id로 하는 노드
         let selectedNode;
         for (let i = 0; i < directoryJson.length; i++){
@@ -154,6 +157,9 @@ function showPostViewer(sticker, index){
         document.getElementById("post-title").innerHTML = selectedNode['name'];
 
         document.querySelector("#veiling-div").style.display = "block";
+        
+        initiate_image_viewer();
+        
         post_viewer.style.display = "grid";
 
         // document-viewer의 크기를 다시 지정
@@ -204,6 +210,7 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", resize_pv_br);
     
     body.removeEventListener("mousemove", moveImage);
+    body.removeEventListener("mousemove", resize_hier);
     
     doc_viewer.style.zIndex = "0";
 });

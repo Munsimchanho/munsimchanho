@@ -2,6 +2,7 @@ let post_viewer = document.querySelector("#post-viewer");
 let upper_bar = document.querySelector("#upper-bar");
 let right_viewer = document.querySelector("#right-viewer");
 let doc_viewer = document.querySelector("#document-viewer");
+let hierarchy_viewer = document.querySelector("#hierarchy-viewer");
 let right_viewer_style = window.getComputedStyle(right_viewer);
 let pv_resizer_l = document.querySelector("#post-viewer-resizer-l");
 let pv_resizer_r = document.querySelector("#post-viewer-resizer-r");
@@ -11,9 +12,11 @@ let pv_resizer_tl = document.querySelector("#post-viewer-resizer-tl");
 let pv_resizer_tr = document.querySelector("#post-viewer-resizer-tr");
 let pv_resizer_bl = document.querySelector("#post-viewer-resizer-bl");
 let pv_resizer_br = document.querySelector("#post-viewer-resizer-br");
+let hier_resizer = document.querySelector("#hierarchy-viewer-resizer");
 
 let pvw = "1000px", pvh = "750px", pl = "50%", pt = "50%";
 let isFullScreen = false;
+let hierw = 250;
 
 $( window ).resize( function() {
     resizeDocViewer();
@@ -35,6 +38,23 @@ upper_bar.addEventListener("dblclick", () => {
     isFullScreen = !isFullScreen;
 });
 
+hier_resizer.addEventListener("mousedown", () => {
+    // iframe에 event를 뺏기지 않도록 div로 막음
+    doc_viewer.style.zIndex = "-1";
+    body.addEventListener("mousemove", resize_hier);
+});
+
+function resize_hier(e){
+    let style = window.getComputedStyle(post_viewer);   
+    let dx = e.clientX - (parseFloat(style.left) - .5 * parseFloat(style.width));
+    
+    
+    hierw = Math.max(150, dx);
+    
+    document.documentElement.style.setProperty('--hier-w', hierw + "px");
+    
+    resizeDocViewer();
+}
 
 pv_resizer_l.addEventListener("mousedown", () => {
    body.addEventListener("mousemove", resize_pv_l);
@@ -112,6 +132,20 @@ function resize_pv(ver, hor, x, y){
         pt = (ay - ver * .5 * dy) + "px";
     }
     
+    let doc_style = window.getComputedStyle(doc_viewer);
+    let img_style = window.getComputedStyle(img_viewer);
+
+    // 가로가 더 짧음
+    if (parseFloat(doc_style.width) / parseFloat(doc_style.height) < parseFloat(img_style.width) / parseFloat(img_style.height)){
+        console.log("hor");
+        img_viewer.style.width  = "100%";
+        img_viewer.style.height = "auto";
+    }
+    else{
+        console.log("ver");
+        img_viewer.style.width  = "auto";
+        img_viewer.style.height = "100%";
+    }
     
     
     resizeDocViewer();
@@ -126,6 +160,14 @@ function fullscreen_pv(){
     post_viewer.style.borderRadius = "0px";
 	post_viewer.style.gridTtemplateColumns = "1fr 3fr";
 	
+    pv_resizer_l.style.cursor  = "default";
+    pv_resizer_r.style.cursor  = "default";
+    pv_resizer_t.style.cursor  = "default";
+    pv_resizer_b.style.cursor  = "default";
+    pv_resizer_tl.style.cursor = "default";
+    pv_resizer_tr.style.cursor = "default";
+    pv_resizer_bl.style.cursor = "default";
+    pv_resizer_br.style.cursor = "default";
     
     resizeDocViewer();
 }
@@ -139,19 +181,18 @@ function defullscreen_pv(){
     post_viewer.style.borderRadius = "15px";
 	post_viewer.style.gridTtemplateColumns = "250px 1fr";
 	
+    pv_resizer_l.style.cursor  = "ew-resize";
+    pv_resizer_r.style.cursor  = "ew-resize";
+    pv_resizer_t.style.cursor  = "ns-resize";
+    pv_resizer_b.style.cursor  = "ns-resize";
+    pv_resizer_tl.style.cursor = "nw-resize";
+    pv_resizer_tr.style.cursor = "ne-resize";
+    pv_resizer_bl.style.cursor = "ne-resize";
+    pv_resizer_br.style.cursor = "nw-resize";
     
     resizeDocViewer();
 }
-
-
-
-
-
-
-
-
-
-
+ 
 
 function resizeDocViewer(){
     if (doc_viewer.tagName.toLocaleLowerCase() == "iframe" && !doc_viewer.classList.contains("docs")){
