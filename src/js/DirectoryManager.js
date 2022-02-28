@@ -5,7 +5,7 @@ let selectedDir;
 let loggedIn = false;
 
 
-
+// 로그인 확인
 let formData_1 = new FormData();
 formData_1.append("code", "check");
 
@@ -22,6 +22,7 @@ $.ajax({
         console.log(res);
         if (res == userName){
             loggedIn = true;
+            document.querySelector("#palette_bar").style.display = "block";
         }
     }
 });
@@ -258,13 +259,13 @@ function drawUlWithId(folderId){
                 updateIsFolderClosed();
                 
                 showFile(childId);
+                
+                // ul 태그를 삭제함
+                document.querySelector("#hierarchy-viewer ul").remove();
+
+                // 수정된 directoryJson(변수)를 바탕으로 ul 태그를 다시 그림
+                drawUlWithId(selectedDir);
             }
-            
-            // ul 태그를 삭제함
-            document.querySelector("#hierarchy-viewer ul").remove();
-            
-            // 수정된 directoryJson(변수)를 바탕으로 ul 태그를 다시 그림
-            drawUlWithId(selectedDir);
         });
     });
     
@@ -511,6 +512,8 @@ function showFile(id){
 }
 
 function createFolder(node){
+    if (!loggedIn) return "invalid";
+    
     let folderName = prompt("생성할 폴더의 이름을 입력하세요.");
     if (folderName != null || folderName.trim() == ""){
         for (let i = 0; i < directoryJson.length; i++){
@@ -595,14 +598,17 @@ function drawFolderLi(node){
         innerLi.classList.add("draggable");
         innerLi.classList.add("container");
         innerLi.draggable = "true";
+        
+        let addFolderButton = document.createElement("img");
+        addFolderButton.className = "add-folder-btn";
+        addFolderButton.src = "/Img/test/plus.svg";
+        addFolderButton.addEventListener("mousedown", () => {
+            createFolder(node);
+        });
+
+        innerLi.appendChild(addFolderButton);
     }
     
-    let addFolderButton = document.createElement("img");
-    addFolderButton.className = "add-folder-btn";
-    addFolderButton.src = "/Img/test/plus.svg";
-    addFolderButton.addEventListener("mousedown", () => {
-        createFolder(node);
-    });
     
     // 클릭하면 selected라는 className 부여
     innerLi.addEventListener("mousedown", () => {
@@ -614,7 +620,6 @@ function drawFolderLi(node){
         innerLi.classList.add("selected");
     });
     
-    innerLi.appendChild(addFolderButton);
 
     // 폴더 전체 li에 innerLi를 추가
     li.appendChild(innerLi);

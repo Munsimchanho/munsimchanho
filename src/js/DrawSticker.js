@@ -1,7 +1,9 @@
-let palette = document.getElementById("palette");
+let palette = [];
+let pageTab = [];
 let stickers = [];
 let stickerJson;
 let body = document.querySelector("body");
+let pageTabParent = document.querySelector("#page-tab-parent");
 let userName = getUrlParams()['user'];
 
 function getUrlParams() {     
@@ -17,6 +19,11 @@ function getUrlParams() {
     return params; 
 }
 
+let pageCount = 1;
+let pages = [];
+let curPage = 1;
+let pageColor = [];
+
 // StickerInfo.json을 가져와서 stickerJson 변수에 저장함
 $.ajax({ 
     url: `/User/${ userName }/StickerInfo.json`,
@@ -27,11 +34,73 @@ $.ajax({
     stickerJson = data;
     console.log(data);
     
-    // palette div에 스티커 div 생성
-    for (let i = 0; i < stickerJson.length; i++){
-        palette.appendChild(drawSticker(i, stickerJson[i]));
-    }
+    $.ajax({
+        url: `/User/${ userName }/PageInfo.json`,
+        method: "GET",
+        dataType: "json"
+    })
+    .done(function(res) {
+        pages = res;
+        pageCount = res.length;
+        
+        // palette를 생성함
+        for (let i = 0; i < pageCount; i++){
+            // <div id="palette" class="palette">
+            let page = document.createElement("div");
+            page.id = "palette_" + (i+1);
+            page.className = "palette";
+            page.style.background = pages[i]['color'];
+            body.appendChild(page);
+
+            // page.addEventListener("click", () => {
+            //     if (isBarOpened){
+            //         HidePaletteBar();
+
+            //         isBarOpened = false;
+            //     }
+            // });
+            
+            let tab = document.createElement("div");
+            tab.id = "tab_" + (i+1);
+            tab.className = "page-tab";
+            tab.style.background = pages[i]['color'];
+            tab.addEventListener("click", () => {
+                if (!isBarOpened) togglePage(i);
+            });
+            pageTabParent.appendChild(tab);
+
+            pageTab.push(tab);
+            palette.push(page);
+        }
+        
+        
+        
+
+        // palette div에 스티커 div 생성
+        for (let i = 0; i < stickerJson.length; i++){
+            palette[stickerJson[i]['page'] - 1].appendChild(drawSticker(i, stickerJson[i]));
+        }
+
+        togglePage(0);
+    });
 });
+
+function togglePage(index){
+    curPage = index;
+    
+    for (let i = 0; i < pageCount; i++){
+        if (i == index){
+            palette[i].style.display = "block";
+            pageTab[i].style.boxShadow = "none";
+        }
+        else{
+            palette[i].style.display = "none";
+            pageTab[i].style.boxShadow = "0 -.9rem 1.15rem -1.15rem #000 inset";
+        }
+    }
+}
+
+
 
 function drawSticker(index, data){
     let sticker = document.createElement("div");
@@ -46,9 +115,9 @@ function drawSticker(index, data){
     let stickerText = document.createElement("h1");
     stickerText.innerHTML = data['text'];
     stickerText.style.position = "absolute";
-    // stickerText.style.left = "50%";
+    stickerText.style.left = "50%";
     stickerText.style.top  = "50%";
-    stickerText.style.transform = "translateY(-50%)";
+    stickerText.style.transform = "translate(-50%, -50%)";
     stickerText.style.margin = "0px";
     stickerText.style.fontSize = "4em";
     stickerText.style.userSelect = "none";
@@ -212,5 +281,5 @@ document.addEventListener("mouseup", () => {
     body.removeEventListener("mousemove", moveImage);
     body.removeEventListener("mousemove", resize_hier);
     
-    doc_viewer.style.zIndex = "0";
+    if (doc_viewer != null) doc_viewer.style.zIndex = "0";
 });

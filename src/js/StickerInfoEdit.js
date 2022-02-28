@@ -16,8 +16,14 @@ function findIndexWithDir(dir, list){
 function StickerEdit(){
     if (editingDiv == null) return;
     
+    document.getElementById("palette_bar").style.width = "calc(50 * var(--unit))";
+    
     document.querySelector(`input[name="paletteText"]`).value = stickerJson[findIndexWithDir(editingDiv.id.split("_")[1], stickerJson)]['text'];
     document.getElementById("palette_edit").style.display = "flex";
+    
+    // [...document.getElementById("palette_bar div")].forEach(elem => {
+    //     elem.style.
+    // });
 }
 
 // palette_edit의 저장 버튼 클릭 시
@@ -41,6 +47,9 @@ function StickerSaveEdit(){
     TempStickerText[index] = document.querySelector(`input[name="paletteText"]`).value;
     document.querySelector(`#${ editingDiv.id } h1`).innerHTML = TempStickerText[index];
     
+    isBarOpened = false;
+    ShowPaletteBar();
+    
     //console.log(TempStickerText);
     //console.log(TempImageFile[index]);
     //console.log(TempImageURLS[index]);
@@ -56,14 +65,14 @@ function AddSticker(){
         success (data) {
             let id = Date.now();
             let index = stickerJson.length;
-            directoryJson.push({"type":"folder","name":"폴더","id":id,"parent":"root"});
-            stickerJson.push({"imgDir":"none","text":"폴더","dir":id,"pos":[Math.random() * 1000,Math.random() * 700],"rot":0,"size":[200, 200]});
+            directoryJson.push({"type":"folder","name":"폴더", "id":id,"parent":"root"});
+            stickerJson.push({"imgDir":"none","page": (curPage+1),"text":"폴더","dir":id,"pos":[Math.random() * 1000,Math.random() * 700],"rot":0,"size":[200, 200]});
             TempImageFile[index] = data;
             TempImageURLS[index] = window.URL.createObjectURL(TempImageFile[index]);
             
             console.log(stickerJson.length + ", " + index);
             editingDiv = drawSticker(index, stickerJson[index]);
-            palette.appendChild(editingDiv);
+            palette[curPage].appendChild(editingDiv);
             
             isFolderClosed[String(id)] = true;
             
@@ -74,6 +83,8 @@ function AddSticker(){
 
 function DeleteSticker(){
     if (editingDiv == null) return;
+    
+    console.log(stickerJson);
     
     let index = findIndexWithDir(editingDiv.id.split("_")[1], stickerJson);
     if (confirm("정말 이 스티커를 삭제하시겠습니까?")){

@@ -31,6 +31,11 @@ function resizeDivBR(e){
 function resizeDiv(clientX, clientY, isTopAnc, isLeftAnc){
     if (!Editing) return;
     
+    let paletteTop = parseFloat(window.getComputedStyle(palette[0]).top);
+    console.log(paletteTop);
+    
+    clientY -= paletteTop;
+    
     // 회전값을 받아옴
     let rotate = editingDiv.style.transform;
     rotate = parseFloat(rotate.split('(')[1].replace('deg)', '')); 

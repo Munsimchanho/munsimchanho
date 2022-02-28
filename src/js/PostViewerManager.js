@@ -137,12 +137,10 @@ function resize_pv(ver, hor, x, y){
 
     // 가로가 더 짧음
     if (parseFloat(doc_style.width) / parseFloat(doc_style.height) < parseFloat(img_style.width) / parseFloat(img_style.height)){
-        console.log("hor");
         img_viewer.style.width  = "100%";
         img_viewer.style.height = "auto";
     }
     else{
-        console.log("ver");
         img_viewer.style.width  = "auto";
         img_viewer.style.height = "100%";
     }

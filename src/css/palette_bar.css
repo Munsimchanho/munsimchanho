@@ -1,57 +1,74 @@
 #palette_bar{
+    display: none;
     position: fixed;
     background-color: #6782c2;
-    border-radius: 1em;	
-    left: 50%;
-    top: 90%;
-    width: 30vw;    
-    height: calc(0.16 * 30vw);
-    transform: translate(-50%, -50%);
+    right: 0px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    width: calc(6 * var(--unit));    
+    height: calc(40 * var(--unit));
+    border-radius: calc(4 * var(--unit)) 0 0 calc(4 * var(--unit));
+    z-index: 2;
+    
+    box-shadow:8px 8px 12px rgba(0, 0, 0, .5);
+    
+    transition: width .2s ease-in-out;
 }
 
-#edit_button{
+/* #edit_button{
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
 	width: 4.2vw;
 	height: 4.2vw;	
+} */
+
+#palette_bar_open{
+    position: absolute;    
+    top: 50%;
+    margin-left: calc(1 * var(--unit));
+    transform: translateY(-50%) rotate(0deg);
+    width: calc(2.5 * var(--unit));
+	height: calc(2.5 * var(--unit));
+    
+    transition: transform .2s ease-in-out;
 }
 
 #save_edit_button{
     position: absolute;
-    left: 20%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 4vw;
-	height: 4vw;
+    left: calc(4 * var(--unit));
+    top: 20%;
+    transform: translate(40%, -50%);
+    width: calc(3.5 * var(--unit));
+	height: calc(3.5 * var(--unit));
 }
 
 #sticker_edit_button{
     position: absolute;
-    left: 40%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 4vw;
-	height: 4vw;
+    left: calc(4 * var(--unit));
+    top: 40%;
+    transform: translate(40%, -50%);
+    width: calc(3.5 * var(--unit));
+	height: calc(3.5 * var(--unit));
     opacity: 50%;
 }
 
 #add_sticker_button{
     position: absolute;
-    left: 60%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 4vw;
-	height: 4vw;
+    left: calc(4 * var(--unit));
+    top: 60%;
+    transform: translate(40%, -50%);
+    width: calc(3.5 * var(--unit));
+	height: calc(3.5 * var(--unit));
 }
 
 #delete_sticker_button{
     position: absolute;
-    left: 80%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 4vw;
-	height: 4vw;
+    left: calc(4 * var(--unit));
+    top: 80%;
+    transform: translate(40%, -50%);
+    width: calc(3.5 * var(--unit));
+	height: calc(3.5 * var(--unit));
     opacity: 50%;
 }

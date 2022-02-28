@@ -1,16 +1,26 @@
+@font-face {
+    font-family: 'NotoSansKR Bold';
+    src: url('//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 #palette_edit{
     position: absolute;
-    background-color: white;
-    border: solid 2px;
-    border-radius: 20px;
+    /* border: solid 2px;
+    border-radius: 20px; */
     display: none;
-    left: 50%;
+    left: calc(30 * var(--unit));
     top: 50%;
-    width: 30vw;
-    height: calc(0.6 * 30vw);
+    width: calc(32 * var(--unit));
+    height: 100%;
     transform: translate(-50%, -50%);
-    justify-content: center; /*가로축 정렬*/
-    align-items: center; /*세로축 정렬*/
+    border-left: solid 5px;
+    color: #788ec4;
+    /* border-radius: calc(1 * var(--unit)); */
+    /* box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.1); */
+    align-items: center;
+    justify-content: center;
 }
 
 #submit{
@@ -18,4 +28,50 @@
     left: 50%;
     bottom: 10%;
     transform: translate(-50%, -50%); /*옆으로 반 옮겨줌*/
+}
+
+#palette_edit form input{
+    display: none;
+    margin: none;
+}
+
+#palette_edit form input[type='text']{
+    display: block;
+    font-size: 1.2rem;
+    width: calc(13 * var(--unit));
+    margin-top: calc(4 * var(--unit));
+    margin-bottom: calc(8 * var(--unit));
+    margin-left: calc(12.5 * var(--unit));
+    margin-right: calc(12.5 * var(--unit));
+}
+
+ #palette_edit form label{
+    color: white;
+    font-family: 'NotoSansKR Bold';
+    font-size: 2rem;
+    display: block;
+    width: calc(16 * var(--unit));
+    height: fit-content;
+    margin-left: calc(11 * var(--unit));
+    margin-right: calc(11 * var(--unit));
+    text-align: center;
+    text-shadow: 10px 10px 12px rgba(0, 0, 0, 0.1);
+    border: solid 2px;
+    /* border-radius: calc(.6 * var(--unit)); */
+    transform: scale(1);
+     
+    transition: color .2s ease-out, transform .2s ease-out;
+}
+
+#stickerImgInput+label:hover{
+    color: #f4ffc7;
+    transform: scale(1.2);
+}
+
+#submit+label{
+    width: calc(8 * var(--unit)) !important;
+    margin-left: calc(15 * var(--unit)) !important;
+    margin-right: calc(15 * var(--unit)) !important;
+	background: white;
+	color: #6782c2 !important;
 }

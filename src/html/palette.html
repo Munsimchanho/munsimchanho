@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="/src/css/palette_bar.css">
         <link rel="stylesheet" href="/src/css/palette_edit.css">
         <link rel="stylesheet" href="/src/css/post_viewer.css">
+        <link href="https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Black+Han+Sans&family=Cute+Font&family=Do+Hyeon&family=Dokdo&family=East+Sea+Dokdo&family=Gaegu&family=Gamja+Flower&family=Gothic+A1&family=Gugi&family=Hi+Melody&family=Jua&family=Kirang+Haerang&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Noto+Serif+KR&family=Poor+Story&family=Single+Day&family=Song+Myung&family=Stylish&family=Sunflower:wght@300&family=Yeon+Sung&display=swap" rel="stylesheet">
+        
         <script
           src="https://code.jquery.com/jquery-3.6.0.min.js"
           integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -21,36 +23,64 @@
         <script src="/src/js/PostViewerManager.js" defer></script>
         <script src="/src/js/ImageViewer.js" defer></script>
 	</head>
-	<body>        
-        <div id="palette" class="palette">
-            
+	<body>
+        <div id="page-tab-parent">
         </div>
         
         <div id="palette_bar">
-            <div id="edit_button" onclick="Edit()">
-                <img src="/Img/pencil.png">
+            <div id="palette_bar_open" onclick="ShowPaletteBar()" draggable="false">
+                <img src="/Img/fontawesome/arrow-left-solid.svg" draggable="false">
             </div>
             <div id="save_edit_button" onclick="SaveEdit()">
-                <img src="/Img/checked.png">
+                <img src="/Img/fontawesome/check-solid.svg" draggable="false">
             </div>
             <div id="sticker_edit_button" onclick="StickerEdit()">
-                <img src="/Img/pencil.png">
+                <img src="/Img/fontawesome/pencil-solid.svg" draggable="false">
             </div>
             <div id="add_sticker_button" onclick="AddSticker()">
-                <img src="/Img/plus.png">
+                <img src="/Img/fontawesome/plus-solid.svg" draggable="false">
             </div>
             <div id="delete_sticker_button" onclick="DeleteSticker()">
-                <img src="/Img/delete.png">
+                <img src="/Img/fontawesome/trash-can-solid.svg" draggable="false">
+            </div>
+            
+            <div id="palette_edit" draggable="false">
+                <form onkeydown="return event.key != 'Enter';">
+                    <input type="file"   name="paletteImg" id="stickerImgInput" accept="image/*"/>
+                    <label for="stickerImgInput">Upload Image</label>
+                    
+                    <input type="text"   placeholder="내용을 입력하세요" id="stickerTextInput" name="paletteText"/>
+                    
+                    
+                    
+                    <input type="button" onclick="StickerSaveEdit()" value="제출" id="submit"/>
+                    <label for="submit">Save</label>
+                </form>
             </div>
         </div>
         
-        <div id="palette_edit" draggable="false">
-            <form onkeydown="return event.key != 'Enter';">
-				<input type="file"   name="paletteImg" id="stickerImgInput" accept="image/*"/>
-                <input type="text"   placeholder="내용을 입력하세요" name="paletteText"/>       
-                <input type="button" onclick="StickerSaveEdit()" value="제출" id="submit"/>
-            </form>
-        </div>
+        <script>
+            let isBarOpened = false;
+            
+            function ShowPaletteBar(){
+                if (isBarOpened){
+                    HidePaletteBar();
+
+                    isBarOpened = false;
+                    return;
+                }
+                
+                isBarOpened = true;
+                document.querySelector("#palette_bar_open").style.transform = "translateY(-50%) rotate(-180deg)";
+                document.getElementById("palette_bar").style.width = "calc(13 * var(--unit))";
+                Edit();
+            }
+            
+            function HidePaletteBar(){
+                document.querySelector("#palette_bar_open").style.transform = "translateY(-50%) rotate(0deg)";
+                document.getElementById("palette_bar").style.width = "calc(6 * var(--unit))";
+            }
+        </script>
         
         <div id="veiling-div" draggable="false"></div>
         
