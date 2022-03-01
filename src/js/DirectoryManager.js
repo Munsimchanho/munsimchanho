@@ -356,7 +356,7 @@ function drawUlWithId(folderId){
 
 
 function checkExtension(ext){
-    const imgs = ['gif', 'jpg', 'jpeg', 'png', 'bmp' ,'ico', 'apng'];  
+    const imgs = ['gif', 'jpg', 'jpeg', 'png', 'bmp' ,'ico', 'apng', 'svg'];  
     const docs = ['pdf'];
     let ftype = "invalid";
 
@@ -758,8 +758,17 @@ document.addEventListener("keydown", e => {
             ajaxPost(formData, "/src/php/Server.php");
 
             // 기존 directoryJson의 노드 제거
-            // index 1개 제거
-            directoryJson.splice(index, 1);
+            // 하위 노드까지 전부 제거            
+            
+            let deleteIndex = deleteNode(directoryJson[index]['id']);
+            deleteIndex.push(index);
+            deleteIndex.sort();
+            
+            for (let i = 0; i < deleteIndex.length; i++){
+                // directoryJson[deleteIndex[i]] = null;
+                directoryJson.splice(deleteIndex[i] - i, 1);
+            }
+            
             
             // 수정한 directoryJson을 서버에 올림
             formData = new FormData();

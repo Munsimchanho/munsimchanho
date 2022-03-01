@@ -20,55 +20,45 @@ function toggleInput(index){
             inputTabs[i].style.boxShadow = "0 -.9rem 1.15rem -1.15rem #000 inset";
         }
     }
-}
+} 
 
 
-
-
-let pageColorPalette = ["#fce7e6", "#eefce6", "#e6eefc", "#dbe2ff", "#fcc2ff", "#ffc2c2"];
+let pageColorPalette = ["#fce7e6", "#eefce6", "#e3edff", "#dee0ff", "#ece6cc"];
 function NewPage(){
-    pages.push({"page": (pages.length + 1), "color": pageColorPalette[Math.floor(Math.random() * pageColorPalette.length)]});
+    pages.push({"page": (pages.length + 1), "color": pageColorPalette[pages.length]});
     
     // 서버에 PageInfo.json을 올림
     let formData = new FormData();
     formData.append('code', "UpdatePageInfo");
     formData.append("user", userName);
     formData.append('json', JSON.stringify(pages));
-    ajaxPost(formData, "/src/php/Server.php");
-    
-    location.reload();
+    $.ajax({
+        url         : "/src/php/Server.php",
+        type        : "POST",
+        dataType    : 'html',
+        enctype     : "multipart/form-data",
+        processData : false,
+        contentType : false,
+        data        : formData,
+        async       : false,
+        success     : function(res){ 
+            location.reload();
+        }
+    });
 }
 
 
+function showDescription(){
+    document.querySelector('#description-par').style.display = "block";
+	document.querySelector('#description').style.display = "block";
+}
+
+function unshowDescription(){
+	document.querySelector('#description-par').style.display = "none";
+    document.querySelector('#description').style.display = "none";
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
 
 function ShowPaletteBar(){
     if (isBarOpened){

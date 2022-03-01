@@ -80,6 +80,17 @@ body{
     width: calc(1.6 * var(--unit));
     height: calc(2.7 * var(--unit));
 	margin-left:  calc(1 * var(--unit));
+    
+	transition: width .15s ease-out, height .15s ease-out;
+}
+
+
+#create-page-button:hover{
+    position: relative;
+    display: inline-block;
+    width: calc(1.7 * var(--unit));
+    height: calc(2.8 * var(--unit));
+	margin-left:  calc(1 * var(--unit));
 }
 
 .palette{
@@ -190,4 +201,95 @@ img{
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+#desc-upper-bar{
+    position: absolute;
+	background-color: lightgray;
+    border-bottom: solid 2px;
+    border-top-left-radius: calc(.75 * var(--unit));
+    border-top-right-radius: calc(.75 * var(--unit));
+	width: 100%;
+    height: calc(2.2 * var(--unit));
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+	
+}
+
+#description-par{
+    background: white;
+	position: absolute;
+	display: none;
+	border: solid 2px;
+	border-radius: calc(1 * var(--unit));
+	width: calc(50 * var(--unit));
+	height: calc(40 * var(--unit));
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 333;
+	padding: calc(4 * var(--unit));
+    padding-bottom: 0px;
+	color: black;
+}
+
+#description{
+	background: white;
+	position: absolute;
+	display: none;
+	width: calc(50 * var(--unit));
+	height: calc(37.8 * var(--unit) - 2px);
+    border-bottom-left-radius: calc(.75 * var(--unit));
+    border-bottom-right-radius: calc(.75 * var(--unit));
+	font-size: calc(1 * var(--unit));
+	font-family: 'NotoSansKR Bold';
+	text-align: center;
+    top: calc(2.2 * var(--unit) + 2px);
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 333;
+    overflow: auto;
+	padding: calc(4 * var(--unit));
+    padding-bottom: 0px;
+	color: black;
+}
+
+#description ul{
+	text-align: start !important;
+}
+
+#description h1{
+	margin: 0;
+}
+
+#show-description-btn{
+	position: absolute;
+	top: calc(1.375 * var(--unit));
+	right: calc(2 * var(--unit));
+	width: calc(1.5 * var(--unit));
+	height: calc(1.5 * var(--unit));
+	transform: translateY(-38%);
+	z-index: 400;
+    
+	transition: width .15s ease-out, height .15s ease-out;
+}
+
+#show-description-btn:hover{
+	position: absolute;
+	top: calc(1.375 * var(--unit));
+	right: calc(2 * var(--unit));
+	width: calc(1.7 * var(--unit));
+	height: calc(1.7 * var(--unit));
+	transform: translateY(-38%);
+	z-index: 400;
+}
+
+#unshow-description-btn{
+	position: absolute;
+	top: calc(.2 * var(--unit));
+	right: calc(.4 * var(--unit));
+	width: calc(1.8 * var(--unit));
+	height: calc(1.8 * var(--unit)); 
+	/* z-index: 400; */
 }

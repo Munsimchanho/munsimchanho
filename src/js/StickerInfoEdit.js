@@ -96,6 +96,9 @@ function AddSticker(){
     });
 }
 
+let deleteImgs = [];
+
+// 스티커 삭제 시
 function DeleteSticker(){
     if (editingDiv == null) return;
     
@@ -104,12 +107,13 @@ function DeleteSticker(){
     let index = findIndexWithDir(editingDiv.id.split("_")[1], stickerJson);
     if (confirm("정말 이 스티커를 삭제하시겠습니까?")){
         let deleteIndex = deleteNode(stickerJson[index]['dir']);
-        deleteIndex.push(findIndexWithId(stickerJson[index]['dir'], directoryJson));
+        //deleteIndex.push(findIndexWithId(stickerJson[index]['dir'], directoryJson));
         
         for (let i = 0; i < deleteIndex.length; i++){
             directoryJson[deleteIndex[i]] = null;
             //directoryJson.splice(deleteIndex[i], 1);
         }
+        deleteImgs.push(stickerJson[index]['imgDir']);
         //stickerJson.splice(index, 1);
         stickerJson[index] = null;
         // sticker div 제거
@@ -129,6 +133,7 @@ function deleteNode(parent){
         if (directoryJson[i]['parent'] == parent){
             if (directoryJson[i]['type'] == "folder"){
                 //Array.prototype.push.apply(deleteIndex, deleteNode(directoryJson[i]['id']));
+                deleteIndex.push(i);
                 deleteIndex = deleteIndex.concat(deleteNode(directoryJson[i]['id']));
             }
             else{

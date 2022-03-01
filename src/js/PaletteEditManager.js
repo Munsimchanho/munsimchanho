@@ -101,6 +101,14 @@ function SaveEdit(){
         stickerJson[i]['imgDir'] = `../../User/${ userName }/${ fname }`;
     }
     
+    
+    for (let i = 0; i < deleteImgs.length; i++){
+        let formData = new FormData();
+        formData.append("code", "DeleteFile");
+        formData.append("dir", deleteImgs[i]);
+        ajaxPost(formData, "/src/php/Server.php");
+    }
+    
     for (let i = 0; i < stickerJson.length; i++){
         if (stickerJson[i] == null){
             stickerJson.splice(i, 1);
