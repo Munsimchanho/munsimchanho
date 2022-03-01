@@ -22,9 +22,11 @@
         <script src="/src/js/DirectoryManager.js" defer></script>
         <script src="/src/js/PostViewerManager.js" defer></script>
         <script src="/src/js/ImageViewer.js" defer></script>
+        <script src="/src/js/PageManager.js" defer></script>
 	</head>
 	<body>
         <div id="page-tab-parent">
+            <img id="create-page-button" src="/Img/fontawesome/plus-solid.svg" onclick="NewPage()">
         </div>
         
         <div id="palette_bar">
@@ -45,45 +47,41 @@
             </div>
             
             <div id="palette_edit" draggable="false">
-                <form onkeydown="return event.key != 'Enter';">
-                    <input type="file"   name="paletteImg" id="stickerImgInput" accept="image/*"/>
-                    <label for="stickerImgInput">Upload Image</label>
-                    
-                    <input type="text"   placeholder="내용을 입력하세요" id="stickerTextInput" name="paletteText"/>
-                    
-                    
-                    
-                    <input type="button" onclick="StickerSaveEdit()" value="제출" id="submit"/>
-                    <label for="submit">Save</label>
-                </form>
-            </div>
-        </div>
-        
-        <script>
-            let isBarOpened = false;
-            
-            function ShowPaletteBar(){
-                if (isBarOpened){
-                    HidePaletteBar();
-
-                    isBarOpened = false;
-                    return;
-                }
+                <div id="input-tab-0" class="input-tab" onclick="toggleInput(0)">
+                    <center>Image</center>
+                </div>
+                <div id="input-tab-1" class="input-tab" onclick="toggleInput(1)">
+                    <center>Text</center>
+                </div>
                 
-                isBarOpened = true;
-                document.querySelector("#palette_bar_open").style.transform = "translateY(-50%) rotate(-180deg)";
-                document.getElementById("palette_bar").style.width = "calc(13 * var(--unit))";
-                Edit();
-            }
-            
-            function HidePaletteBar(){
-                document.querySelector("#palette_bar_open").style.transform = "translateY(-50%) rotate(0deg)";
-                document.getElementById("palette_bar").style.width = "calc(6 * var(--unit))";
-            }
-        </script>
-        
-        <div id="veiling-div" draggable="false"></div>
-        
+                
+                <div id="palette_edit_img" draggable="false">
+                    <form onkeydown="return event.key != 'Enter';">
+                        <input type="file"   name="paletteImg" id="stickerImgInput" accept="image/*"/>
+                        <div id="imginput">
+							<img src= "/Img/c1.jpg"/>
+                            <label for="stickerImgInput">Upload Image</label>
+						</div>
+                        
+                        <input type="button" onclick="StickerSaveEdit()" value="제출" id="img-submit" class="submit"/>
+                        <label for="img-submit">Save</label>
+                    </form>
+                </div>
+                
+                <div id="palette_edit_text" draggable="false">
+                    <form onkeydown="return event.key != 'Enter';">
+                        <input type="text"   placeholder="내용을 입력하세요" id="stickerTextInput" name="paletteText"/>
+                        <div id="text-input-line">
+                            
+                        </div>
+                        
+                        <input type="button" onclick="StickerSaveEdit()" value="제출" id="text-submit" class="submit"/>
+                        <label for="text-submit">Save</label>
+                    </form>
+                </div>
+            </div>
+        </div> 
+		
 		<div id="post-viewer" draggable="false">
             <div id="upper-bar" draggable="false">
                 <div id="post-viewer-close-btn" onclick="ClosePostViewer()" draggable="false">
@@ -115,6 +113,8 @@
             
             <div id="hierarchy-viewer-resizer" draggable="false"> </div>
 		</div>
+        
+        <div id="veiling-div" draggable="false"></div>
 	</body>
 </html>
 

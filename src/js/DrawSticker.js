@@ -4,6 +4,7 @@ let stickers = [];
 let stickerJson;
 let body = document.querySelector("body");
 let pageTabParent = document.querySelector("#page-tab-parent");
+let veilingDiv = document.querySelector("#veiling-div");
 let userName = getUrlParams()['user'];
 
 function getUrlParams() {     
@@ -43,6 +44,11 @@ $.ajax({
         pages = res;
         pageCount = res.length;
         
+        document.querySelector("#create-page-button").style.display = "none";
+        if (pageCount < 5 && loggedIn){
+            document.querySelector("#create-page-button").style.display = "inline-block";
+        }
+        
         // palette를 생성함
         for (let i = 0; i < pageCount; i++){
             // <div id="palette" class="palette">
@@ -50,8 +56,8 @@ $.ajax({
             page.id = "palette_" + (i+1);
             page.className = "palette";
             page.style.background = pages[i]['color'];
-            body.appendChild(page);
-
+            body.insertBefore(page, veilingDiv);
+            
             // page.addEventListener("click", () => {
             //     if (isBarOpened){
             //         HidePaletteBar();
@@ -67,7 +73,7 @@ $.ajax({
             tab.addEventListener("click", () => {
                 if (!isBarOpened) togglePage(i);
             });
-            pageTabParent.appendChild(tab);
+            pageTabParent.insertBefore(tab, document.querySelector("#create-page-button"));
 
             pageTab.push(tab);
             palette.push(page);
@@ -82,8 +88,29 @@ $.ajax({
         }
 
         togglePage(0);
+        resizePalette();
     });
 });
+
+function resizePalette(){
+    for (let i = 0; i < pageCount; i++){
+        // 가로가 더 긺 == 세로가 더 짧음 == 세로를 기준으로 resize함
+        if (window.innerWidth / window.innerHeight > 20/13){
+            let scaler = window.innerHeight / 1300;
+            palette[i].style.height = `calc(1300px - 3.2 * var(--unit) /${ scaler })`;
+            palette[i].style.width = `${ window.innerWidth / scaler }px`;
+            palette[i].style.transform = `scale(${ scaler }) translate(calc(-50% / ${ scaler }), calc((-50% + 1.6 * var(--unit)) / ${ scaler }))`;
+        }
+        // 세로가 더 긺 == 가로가 더 짧음 == 가로를 기준으로 resize함
+        else{
+            let scaler = window.innerWidth / 2000;
+            palette[i].style.width = "2000px";
+            palette[i].style.height = `calc((${ window.innerHeight }px - 3.2 * var(--unit)) / ${ scaler })`;
+            palette[i].style.transform = `scale(${ scaler }) translate(calc(-50% / ${ scaler }), calc((-50% + 1.6 * var(--unit)) / ${ scaler }))`;
+        }
+    }
+}
+
 
 function togglePage(index){
     curPage = index;

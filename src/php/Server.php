@@ -23,4 +23,7 @@
     else if ($_POST['code'] == "DeleteFile"){
         unlink($_POST['dir']);
     }
+    else if ($_POST['code'] == "UpdatePageInfo"){
+        file_put_contents("../../User/" . $_POST['user'] . "/PageInfo.json", $_POST['json']);
+    }
 ?>

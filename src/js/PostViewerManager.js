@@ -20,6 +20,7 @@ let hierw = 250;
 
 $( window ).resize( function() {
     resizeDocViewer();
+    resizePalette();
 } );
 
 upper_bar.addEventListener("mousedown", () => {
@@ -193,6 +194,8 @@ function defullscreen_pv(){
  
 
 function resizeDocViewer(){
+    if (doc_viewer == null) return;
+    
     if (doc_viewer.tagName.toLocaleLowerCase() == "iframe" && !doc_viewer.classList.contains("docs")){
         let doc_viewer_scaler = parseFloat(right_viewer_style.width) / 1600;
     

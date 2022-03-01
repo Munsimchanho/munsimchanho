@@ -10,24 +10,69 @@
     /* border: solid 2px;
     border-radius: 20px; */
     display: none;
-    left: calc(30 * var(--unit));
+    left: calc(13 * var(--vunit));
     top: 50%;
-    width: calc(32 * var(--unit));
+    width: calc(37 * var(--vunit));
     height: 100%;
-    transform: translate(-50%, -50%);
+    transform: translate(0%, -50%);
     border-left: solid 5px;
     color: #788ec4;
     /* border-radius: calc(1 * var(--unit)); */
     /* box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.1); */
     align-items: center;
     justify-content: center;
+    background: white;
 }
 
-#submit{
+.input-tab{
+    display: inline-block;
+    width: calc(10 * var(--vunit)); /*11vw*/
+    height: calc(2.7 * var(--vunit)); /*2.5vw*/
+    /* margin-top: calc(.5 * var(--vunit)); */
+    margin-right: calc(.25 * var(--vunit)); /*.2vw*/
+    /* border: solid 2px; */
+    border-radius: calc(.9 * var(--vunit)) calc(.9 * var(--vunit)) 0 0; /*.8vw .8vw 0 0*/
+    transform: translateY(-100%);
+    background: white;
+    font-size: 1.5rem;
+}
+
+#palette_edit_img, #palette_edit_text{
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.submit{
     position: absolute;
     left: 50%;
     bottom: 10%;
     transform: translate(-50%, -50%); /*옆으로 반 옮겨줌*/
+}
+
+.submit+label{
+    width: calc(8 * var(--vunit)) !important;
+    bottom: 10% !important;
+    
+    
+    position: absolute;
+    left: 50% !important;
+    transform: translateX(-50%) !important; /*옆으로 반 옮겨줌*/
+    color: #6782c2;
+    background: white;
+    font-family: 'NotoSansKR Bold';
+    font-size: 2rem;
+    display: block;
+    /* width: calc(16 * var(--vunit)); */
+    height: fit-content;
+    margin: 0px !important;
+    text-align: center;
+    border: solid 2px;
+}
+
+#palette_edit form{
+    height: 100%;
 }
 
 #palette_edit form input{
@@ -35,43 +80,97 @@
     margin: none;
 }
 
-#palette_edit form input[type='text']{
-    display: block;
-    font-size: 1.2rem;
-    width: calc(13 * var(--unit));
-    margin-top: calc(4 * var(--unit));
-    margin-bottom: calc(8 * var(--unit));
-    margin-left: calc(12.5 * var(--unit));
-    margin-right: calc(12.5 * var(--unit));
+#imginput>img{
+    width: 100%;
+    height: 100%;
+    opacity: 100%;
+    filter: blur(0px);
+    
+    transition: opacity .2s, filter .2s;
 }
 
- #palette_edit form label{
-    color: white;
+#imginput:hover>img{
+    opacity: 50% !important;
+    filter: blur(3px) !important;
+}
+
+#imginput>label{
+    position: absolute;
+    display: none;
+    color: black;
+    font-size: 3.5rem;
     font-family: 'NotoSansKR Bold';
-    font-size: 2rem;
-    display: block;
-    width: calc(16 * var(--unit));
-    height: fit-content;
-    margin-left: calc(11 * var(--unit));
-    margin-right: calc(11 * var(--unit));
     text-align: center;
-    text-shadow: 10px 10px 12px rgba(0, 0, 0, 0.1);
-    border: solid 2px;
-    /* border-radius: calc(.6 * var(--unit)); */
-    transform: scale(1);
-     
+    transform: translate(-50%, -50%) scale(1);
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    border: none;
+    background: none;
+    
     transition: color .2s ease-out, transform .2s ease-out;
 }
 
-#stickerImgInput+label:hover{
-    color: #f4ffc7;
-    transform: scale(1.2);
+#imginput:hover>label{
+    display: block;
 }
 
-#submit+label{
-    width: calc(8 * var(--unit)) !important;
-    margin-left: calc(15 * var(--unit)) !important;
-    margin-right: calc(15 * var(--unit)) !important;
-	background: white;
-	color: #6782c2 !important;
+#imginput>label:hover{
+    color: #6782c2;
 }
+
+
+#imginput{
+    position: absolute;
+    top: calc(3 * var(--vunit));
+    left: 50% !important;
+    transform: translateX(-50%) !important; /*옆으로 반 옮겨줌*/
+	width: calc(26 * var(--vunit));
+    height: calc(26 * var(--vunit));
+}
+
+
+
+
+
+ 
+
+
+#stickerTextInput{ 
+    position: absolute;
+    left: 50%;
+    top: calc(16.5 * var(--vunit));
+    transform: translate(-50%, -50%);
+    
+	text-align: center;
+    display: block !important;
+    font-size: 2.5rem;
+	width: calc(20 * var(--vunit));
+    height: calc(2.5 * var(--vunit));
+	color:  #6782c2;
+    border: none;
+    outline: none; 
+	padding: calc(1.5 * var(--vunit));
+    
+}
+
+#stickerTextInput:focus+#text-input-line{
+    width: calc(30 * var(--vunit));
+	background: #5676e8;
+}
+
+#text-input-line{
+    position: absolute;
+    width: calc(10 * var(--vunit));
+    height: calc(.15 * var(--vunit));
+    left: 50%;
+    top: calc(19 * var(--vunit));
+    transform: translateX(-50%);
+    background:  #acb8e3;
+	transition: width .2s ease-out, background .3s ease-out;
+}
+
+
+
+
+

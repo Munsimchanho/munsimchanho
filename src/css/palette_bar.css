@@ -5,9 +5,9 @@
     right: 0px;
     top: 50%;
     transform: translate(0%, -50%);
-    width: calc(6 * var(--unit));    
-    height: calc(40 * var(--unit));
-    border-radius: calc(4 * var(--unit)) 0 0 calc(4 * var(--unit));
+    width: calc(6 * var(--vunit));    
+    height: calc(40 * var(--vunit));
+    border-radius: calc(4 * var(--vunit)) 0 0 calc(4 * var(--vunit));
     z-index: 2;
     
     box-shadow:8px 8px 12px rgba(0, 0, 0, .5);
@@ -27,48 +27,48 @@
 #palette_bar_open{
     position: absolute;    
     top: 50%;
-    margin-left: calc(1 * var(--unit));
+    margin-left: calc(1 * var(--vunit));
     transform: translateY(-50%) rotate(0deg);
-    width: calc(2.5 * var(--unit));
-	height: calc(2.5 * var(--unit));
+    width: calc(2.5 * var(--vunit));
+	height: calc(2.5 * var(--vunit));
     
     transition: transform .2s ease-in-out;
 }
 
 #save_edit_button{
     position: absolute;
-    left: calc(4 * var(--unit));
+    left: calc(4 * var(--vunit));
     top: 20%;
     transform: translate(40%, -50%);
-    width: calc(3.5 * var(--unit));
-	height: calc(3.5 * var(--unit));
+    width: calc(3.5 * var(--vunit));
+	height: calc(3.5 * var(--vunit));
 }
 
 #sticker_edit_button{
     position: absolute;
-    left: calc(4 * var(--unit));
+    left: calc(4 * var(--vunit));
     top: 40%;
     transform: translate(40%, -50%);
-    width: calc(3.5 * var(--unit));
-	height: calc(3.5 * var(--unit));
+    width: calc(3.5 * var(--vunit));
+	height: calc(3.5 * var(--vunit));
     opacity: 50%;
 }
 
 #add_sticker_button{
     position: absolute;
-    left: calc(4 * var(--unit));
+    left: calc(4 * var(--vunit));
     top: 60%;
     transform: translate(40%, -50%);
-    width: calc(3.5 * var(--unit));
-	height: calc(3.5 * var(--unit));
+    width: calc(3.5 * var(--vunit));
+	height: calc(3.5 * var(--vunit));
 }
 
 #delete_sticker_button{
     position: absolute;
-    left: calc(4 * var(--unit));
+    left: calc(4 * var(--vunit));
     top: 80%;
     transform: translate(40%, -50%);
-    width: calc(3.5 * var(--unit));
-	height: calc(3.5 * var(--unit));
+    width: calc(3.5 * var(--vunit));
+	height: calc(3.5 * var(--vunit));
     opacity: 50%;
 }

@@ -1,6 +1,47 @@
 :root{
     --unit: 1rem;
+    --vunit: 1rem;
 }
+
+@media only screen and (max-width: 1920px){
+    :root{
+        --unit: .85rem;
+    }
+}
+
+@media only screen and (max-width: 1080px){
+    :root{
+        --unit: .7rem;
+    }
+}
+
+@media only screen and (max-width: 720px){
+    :root{
+        --unit: .5rem;
+    }
+}
+
+/*---------------------------------------------*/
+
+@media only screen and (max-height: 1080px){
+    :root{
+        --vunit: .85rem;
+    }
+}
+
+@media only screen and (max-height: 920px){
+    :root{
+        --vunit: .7rem;
+    }
+}
+
+@media only screen and (max-height: 720px){
+    :root{
+        --vunit: .5rem;
+    }
+}
+
+/*---------------------------------------------*/
 
 body{
     width: 100vw;
@@ -22,6 +63,7 @@ body{
 /*color: #ff9aa2 #ffb7b2 #ffdac1 #e2f0cb #b5ead7 #c7ceea */
 
 .page-tab{
+    position: relative;
     display: inline-block;
     width: calc(12 * var(--unit)); /*11vw*/
     height: calc(2.7 * var(--unit)); /*2.5vw*/
@@ -31,9 +73,20 @@ body{
     border-radius: calc(.9 * var(--unit)) calc(.9 * var(--unit)) 0 0; /*.8vw .8vw 0 0*/
 }
 
+
+#create-page-button{
+    position: relative;
+    display: inline-block;
+    width: calc(1.6 * var(--unit));
+    height: calc(2.7 * var(--unit));
+	margin-left:  calc(1 * var(--unit));
+}
+
 .palette{
     position: absolute;
-    top: calc(3.2 * var(--unit));
+    /* top: calc(-3.2 * var(--unit)); */
+    top: 50%;
+    left: 50%;    
     width: 100vw;
     height: calc(100vh - calc(3.2 * var(--unit)));
 }
@@ -44,6 +97,7 @@ body{
     background-color: #8489ad;
     opacity: 30%;
     display: none;
+    z-index:1;
 }
 
 .sticker{

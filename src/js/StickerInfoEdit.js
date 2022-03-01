@@ -16,19 +16,34 @@ function findIndexWithDir(dir, list){
 function StickerEdit(){
     if (editingDiv == null) return;
     
-    document.getElementById("palette_bar").style.width = "calc(50 * var(--unit))";
+    veilingDiv.style.display = "block";
+    
+    document.getElementById("palette_bar").style.width = "calc(50 * var(--vunit))";
     
     document.querySelector(`input[name="paletteText"]`).value = stickerJson[findIndexWithDir(editingDiv.id.split("_")[1], stickerJson)]['text'];
-    document.getElementById("palette_edit").style.display = "flex";
+    document.getElementById("palette_edit").style.display = "block";
+    
+    document.querySelector("#palette_bar_open").style.display = "none";
+    
+    document.querySelector("#imginput>img").src = editingDiv.querySelector("img").src;
     
     // [...document.getElementById("palette_bar div")].forEach(elem => {
     //     elem.style.
     // });
 }
 
+
+document.querySelector("#stickerImgInput").addEventListener('change', e => {
+    document.querySelector("#imginput>img").src = window.URL.createObjectURL(e.target.files[0]);
+});
+
+
+
 // palette_edit의 저장 버튼 클릭 시
 function StickerSaveEdit(){    
     document.querySelector("#palette_edit").style.display = "none";
+    veilingDiv.style.display = "none";
+    document.querySelector("#palette_bar_open").style.display = "block";
     
     let index = findIndexWithDir(editingDiv.id.split("_")[1], stickerJson);
     

@@ -23,6 +23,9 @@ $.ajax({
         if (res == userName){
             loggedIn = true;
             document.querySelector("#palette_bar").style.display = "block";
+            if (pageCount < 5 && loggedIn){
+                document.querySelector("#create-page-button").style.display = "inline-block";
+            }
         }
     }
 });
