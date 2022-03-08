@@ -27,7 +27,7 @@ let pageColor = [];
 
 // StickerInfo.json을 가져와서 stickerJson 변수에 저장함
 $.ajax({ 
-    url: `/User/${ userName }/StickerInfo.json`,
+    url: `/User/${ userName }/StickerInfo.json?a=${ Date.now() }`,
     method: "GET", 
     dataType: "json" 
    })
@@ -36,7 +36,7 @@ $.ajax({
     console.log(data);
     
     $.ajax({
-        url: `/User/${ userName }/PageInfo.json`,
+        url: `/User/${ userName }/PageInfo.json?a=${ Date.now() }`,
         method: "GET",
         dataType: "json"
     })

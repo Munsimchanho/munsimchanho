@@ -228,7 +228,7 @@ img{
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%,-50%);
-	z-index: 333;
+	z-index: 2;
 	padding: calc(4 * var(--unit));
     padding-bottom: 0px;
 	color: black;
@@ -248,7 +248,7 @@ img{
     top: calc(2.2 * var(--unit) + 2px);
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: 333;
+	z-index: 2;
     overflow: auto;
 	padding: calc(4 * var(--unit));
     padding-bottom: 0px;
@@ -270,7 +270,7 @@ img{
 	width: calc(1.5 * var(--unit));
 	height: calc(1.5 * var(--unit));
 	transform: translateY(-38%);
-	z-index: 400;
+	z-index: 1;
     
 	transition: width .15s ease-out, height .15s ease-out;
 }
