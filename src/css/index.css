@@ -75,7 +75,7 @@
     display: inline-block;
     color: #050505;
     
-    transition: color .015s ease-out;
+    transition: color .06s ease-out;
 }
 
 
@@ -323,7 +323,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key1-2{
@@ -334,7 +334,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key1-3{
@@ -345,7 +345,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key1-6{
@@ -356,7 +356,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key1-7{
@@ -367,7 +367,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key2{
@@ -378,7 +378,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key2-4{
@@ -389,7 +389,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key3{
@@ -400,7 +400,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
 .keyboard-key6-5{
@@ -411,7 +411,7 @@
     margin-right: .5vw;
 	margin-bottom: .5vw;
     
-    transition: color .2s ease-out;
+    transition: color .1s ease-out;
 }
 
  
