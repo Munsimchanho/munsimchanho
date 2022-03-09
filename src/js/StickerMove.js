@@ -9,8 +9,8 @@ function moveDiv(e){
     let l = parseFloat(divStyle.left), t = parseFloat(divStyle.top);
     
     // left와 top의 값에 마우스의 움직인 거리를 더해 저장
-    editingDiv.style.left = (l + e.movementX) + "px";
-    editingDiv.style.top  = (t + e.movementY) + "px";
+    editingDiv.style.left = (l + e.movementX / scaler) + "px";
+    editingDiv.style.top  = (t + e.movementY / scaler) + "px";
 }
 
 function resizeDivTL(e){
@@ -31,10 +31,13 @@ function resizeDivBR(e){
 function resizeDiv(clientX, clientY, isTopAnc, isLeftAnc){
     if (!Editing) return;
     
-    let paletteTop = parseFloat(window.getComputedStyle(palette[0]).top);
+    let tabstyle = window.getComputedStyle(pageTab[0]);
+    let paletteTop = parseFloat(tabstyle.marginTop) + parseFloat(tabstyle.height);
     console.log(paletteTop);
     
+    clientX /= scaler;
     clientY -= paletteTop;
+    clientY /= scaler;
     
     // 회전값을 받아옴
     let rotate = editingDiv.style.transform;
@@ -88,6 +91,13 @@ function rotateDiv({clientX, clientY}){
     let h  = parseFloat(editingDiv.style.height);
     let cx = parseFloat(editingDiv.style.left) + .5 * w;
     let cy = parseFloat(editingDiv.style.top)  + .5 * h;
+    
+    let tabstyle = window.getComputedStyle(pageTab[0]);
+    let paletteTop = parseFloat(tabstyle.marginTop) + parseFloat(tabstyle.height);
+    
+    clientX /= scaler;
+    clientY -= paletteTop;
+    clientY /= scaler;
     
     // atan2로 각도 계산 (-PI/2~PI/2)
     let angle = Math.atan2(clientX - cx, cy - clientY);
